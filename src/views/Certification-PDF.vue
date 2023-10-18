@@ -43,66 +43,69 @@
       </v-card>
     </v-col>
   </v-row>
-  <div class="row" v-if="preview">
-    <embed :src="base_64" />
-  </div>
+  <v-row justify="center">
+    <div>
+      <!-- ใช้ <iframe> เพื่อแสดงไฟล์ PDF -->
+      <iframe :src="base_64" ref="pdfIframe" v-if="preview"></iframe>
+    </div>
+  </v-row>
 </template>
 
 <script>
 // import create_pdf from "@/js/cer_th";
 import * as XLSX from "xlsx";
-import createPDF from '../service/apiCreatePDF'
+import createPDF from "../service/apiCreatePDF";
 
 export default {
   data() {
     return {
       form: {
-        pj_name: "Test",
+        pj_name: "Molecular biology for life and medicine",
         pj_code: "2023-PAR-",
-        date: "16",
+        date: "ระหว่างวันที่ 2-4 ตุลาคม 2566",
         sign: false,
       },
       show: false,
       base_64: null,
       excel_array: null,
-      preview: true,
+      preview: false,
     };
   },
-  async mounted() {
-    const res1 = await createPDF.create_pdf()
-    console.log(res1)
-  },
+  async mounted() {},
   methods: {
-  async add_file() {
-    const file = this.$refs.myFiles.files[0];
-    const data = await file.arrayBuffer();
-    const workbook = XLSX.read(data);
-    const ws = workbook.Sheets[workbook.SheetNames[0]];
-    const result = XLSX.utils.sheet_to_json(ws, {});
-    this.excel_array = result;
-    this.createPDF()
-  },
-  async createPDF() {
-    await createPDF.testPDF()
-  }
-},
+    async add_file() {
+      const file = this.$refs.myFiles.files[0];
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const ws = workbook.Sheets[workbook.SheetNames[0]];
+      const result = XLSX.utils.sheet_to_json(ws, {});
+      this.excel_array = result;
+    },
 
-  // watch: {
-  //    async 'excel_array'() {
-  //     await createPDF.create_pdf(this.excel_array, this.form)
-  //   }
-  // },
-  // watch: {
-  //   'excel_array'() {
-  //     const aa = preview_cer_th(this.excel_array, this.form)
-  //     console.log(aa)
-  //     aa.getDataUrl((dataUrl) => {
-  //       this.base_64 = dataUrl
-  //     });
-  //     this.show = true
-  //   }
-  // },
-  
+    async createCertificate() {
+      const pdfDocGenerator = await createPDF.certification_pdf(
+        this.excel_array,
+        this.form
+      );
+
+      pdfDocGenerator.getDataUrl((dataUrl) => {
+        this.base_64 = dataUrl;
+        const iframe = this.$refs.pdfIframe;
+        iframe.src = dataUrl;
+
+        // กำหนดความกว้างและความสูงของ iframe ตรงนี้
+        iframe.style.width = "770px"; // เปลี่ยนเป็นค่าที่คุณต้องการ
+        iframe.style.height = "600px"; // เปลี่ยนเป็นค่าที่คุณต้องการ
+      });
+      this.preview = true
+      this.show = true;
+    },
+  },
+  watch: {
+    excel_array() {
+      this.createCertificate();
+    },
+  },
 };
 </script>
 <style scoped>
