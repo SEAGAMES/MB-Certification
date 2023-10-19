@@ -1,43 +1,82 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" sm="10" md="8" lg="6">
-      <v-card ref="form" height="300">
+      <v-card ref="form" height="260">
         <v-card-text>
-          <v-text-field
-            label="ชื่อโครงการ"
-            v-model="form.pj_name"
-          ></v-text-field>
-          <v-text-field
-            label="รหัสโครงการ"
-            id="pj_name"
-            v-model="form.pj_code"
-            @input="form.pj_code = $event.target.value.toUpperCase()"
-          ></v-text-field>
-          <v-text-field label="วันที่" v-model="form.date"></v-text-field>
+          <v-row
+            ><v-col
+              ><v-text-field
+                label="ชื่อโครงการ"
+                v-model="form.pj_name"
+              ></v-text-field></v-col
+            ><v-col
+              ><v-row
+                ><v-col>
+                  <v-switch
+                    v-model="form.language"
+                    hide-details
+                    true-value="Eng"
+                    false-value="TH"
+                    color="indigo"
+                    value="indigo"
+                    :label="`ฟอร์ม : ${form.language}`"
+                  ></v-switch> </v-col
+                ><v-col
+                  ><v-checkbox
+                    label="ใส่ลายเซ็น ผอ."
+                    v-model="form.sign"
+                    color="indigo"
+                    value="indigo"
+                    hide-details
+                  ></v-checkbox></v-col
+                ><v-col
+                  ><v-checkbox
+                    label="2 ลายเซ็น"
+                    v-model="form.two_sign"
+                    color="indigo-darken-3"
+                    value="indigo-darken-3"
+                    hide-details
+                  ></v-checkbox></v-col></v-row></v-col
+          ></v-row>
+          <v-row class="mt-n8">
+            <v-col
+              ><v-text-field
+                label="รหัสโครงการ"
+                id="pj_name"
+                v-model="form.pj_code"
+                @input="form.pj_code = $event.target.value.toUpperCase()"
+              ></v-text-field
+            ></v-col>
+            <v-col
+              ><v-text-field
+                label="ชื่อ"
+                v-model="form.add_name"
+                :disabled="!form.two_sign"
+              ></v-text-field
+            ></v-col>
+          </v-row>
+          <v-row class="mt-n8"
+            ><v-col
+              ><v-text-field
+                label="วันที่"
+                v-model="form.date"
+              ></v-text-field></v-col
+            ><v-col
+              ><v-text-field
+                label="ตำแหน่ง"
+                v-model="form.position"
+                :disabled="!form.two_sign"
+              ></v-text-field></v-col
+          ></v-row>
           <v-row>
-            <v-checkbox
-              label="ใส่ลายเซ็น ผอ."
-              v-model="form.sign"
-              color="indigo"
-              value="indigo"
-              hide-details
-            ></v-checkbox>
-            <v-checkbox
-              label="2 ลายเซ็น"
-              color="indigo-darken-3"
-              value="indigo-darken-3"
-              hide-details
-            ></v-checkbox>
-
             <input
-              class="mt-4"
+              class="mt-n5 ml-3"
               type="file"
               @change.left="add_file()"
               @click="this.$refs.myFiles.value = null"
               ref="myFiles"
               accept=".xls, .xlsx, .csv"
-            />
-          </v-row>
+          /></v-row>
         </v-card-text>
         <v-divider class="mt-12"></v-divider>
       </v-card>
@@ -63,9 +102,12 @@ export default {
         pj_name: "Molecular biology for life and medicine",
         pj_code: "2023-PAR-",
         date: "ระหว่างวันที่ 2-4 ตุลาคม 2566",
-        sign: false,
+        add_name: "อาจารย์ ธนกฤต นิ่มนวล",
+        position: "ผู้อำนวยการสถาบันชีววิทยาศาสตร์โมเลกุล",
+        language: "Eng",
+        sign: true,
+        two_sign: true,
       },
-      show: false,
       base_64: null,
       excel_array: null,
       preview: false,
@@ -97,8 +139,7 @@ export default {
         iframe.style.width = "770px"; // เปลี่ยนเป็นค่าที่คุณต้องการ
         iframe.style.height = "600px"; // เปลี่ยนเป็นค่าที่คุณต้องการ
       });
-      this.preview = true
-      this.show = true;
+      this.preview = true;
     },
   },
   watch: {
@@ -108,8 +149,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-embed {
-  height: 70vh;
-}
-</style>
