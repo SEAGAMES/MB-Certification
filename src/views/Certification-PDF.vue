@@ -100,13 +100,13 @@ export default {
     return {
       form: {
         pj_name: "Molecular biology for life and medicine",
-        pj_code: "2023-PAR-",
+        pj_code: "2023-PAR-ASST-",
         date: "ระหว่างวันที่ 2-4 ตุลาคม 2566",
         add_name: "อาจารย์ ธนกฤต นิ่มนวล",
         position: "ผู้อำนวยการสถาบันชีววิทยาศาสตร์โมเลกุล",
-        language: "Eng",
-        sign: true,
-        two_sign: true,
+        language: "TH",
+        sign: false,
+        two_sign: false,
       },
       base_64: null,
       excel_array: null,
