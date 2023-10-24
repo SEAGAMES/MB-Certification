@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" sm="10" md="8" lg="6">
-      <v-card ref="form" height="260">
+      <v-card ref="form" height="265">
         <v-card-text>
           <v-row
             ><v-col
@@ -59,12 +59,12 @@
             ><v-col
               ><v-text-field
                 label="วันที่"
-                v-model="form.date"
+                v-model="form.date_desc"
               ></v-text-field></v-col
             ><v-col
               ><v-text-field
                 label="ตำแหน่ง"
-                v-model="form.position"
+                v-model="form.add_position"
                 :disabled="!form.two_sign"
               ></v-text-field></v-col
           ></v-row>
@@ -76,7 +76,10 @@
               @click="this.$refs.myFiles.value = null"
               ref="myFiles"
               accept=".xls, .xlsx, .csv"
-          /></v-row>
+            />
+            <v-spacer></v-spacer>
+            <v-btn class="mt-n7 mx-2" size="small" color="indigo" icon="mdi-cloud-upload"></v-btn>
+          </v-row>
         </v-card-text>
         <v-divider class="mt-12"></v-divider>
       </v-card>
@@ -94,16 +97,18 @@
 // import create_pdf from "@/js/cer_th";
 import * as XLSX from "xlsx";
 import createPDF from "../service/apiCreatePDF";
+//import createCertificate from "../service/apiCertificate";
 
 export default {
   data() {
     return {
       form: {
         pj_name: "Molecular biology for life and medicine",
-        pj_code: "2023-PAR-ASST-",
-        date: "ระหว่างวันที่ 2-4 ตุลาคม 2566",
+        pj_code: "PAR-ASST-AA",
+        date_desc: "ระหว่างวันที่ 2-4 ตุลาคม 2566",
+        currentYear: "",
         add_name: "อาจารย์ ธนกฤต นิ่มนวล",
-        position: "ผู้อำนวยการสถาบันชีววิทยาศาสตร์โมเลกุล",
+        add_position: "ผู้อำนวยการสถาบันชีววิทยาศาสตร์โมเลกุล",
         language: "TH",
         sign: false,
         two_sign: false,
@@ -125,6 +130,9 @@ export default {
     },
 
     async createCertificate() {
+      const currentDate = new Date();
+      this.form.currentYear = currentDate.getFullYear();
+
       const pdfDocGenerator = await createPDF.certification_pdf(
         this.excel_array,
         this.form
@@ -140,6 +148,9 @@ export default {
         iframe.style.height = "600px"; // เปลี่ยนเป็นค่าที่คุณต้องการ
       });
       this.preview = true;
+
+      // const result = await createCertificate.createCertificate(this.form);
+      // console.log(result)
     },
   },
   watch: {

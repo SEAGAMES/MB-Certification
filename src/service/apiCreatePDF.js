@@ -206,12 +206,12 @@ function run(excel, form) {
         width: 80
       },
       {
-        text: 'CERTIFICATION NUMBER  ' + form.pj_code + String(index + 1).padStart(4, '0'),
+        text: 'CERTIFICATION NUMBER  ' + form.currentYear + '-' + form.pj_code + String(index + 1).padStart(4, '0'),
         fontSize: 9,
         absolutePosition: { x: 590, y: 40 }
       },
 
-      (form.pj_code.length <= 9) ? { qr: form.pj_code + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 710, y: 60 } } : { qr: form.pj_code + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 728, y: 60 } },
+      (form.pj_code.length <= 4) ? { qr: form.pj_code + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 708, y: 60 } } : { qr: form.pj_code + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 728, y: 60 } },
 
       (form.language === "Eng") ? { text: 'Institute of  Molecular Biosciences', color: '#1565C0', fontSize: 22 } : {},
       (form.language === "Eng") ? { text: 'Mahidol University ', color: '#1565C0', fontSize: 22 } : {},
@@ -269,11 +269,11 @@ function run(excel, form) {
               text: 'ศาสตราจารย์ ดร. นายแพทย์นรัตถพล เจริญพันธุ์',
               fontSize: 12,
               bolditalics: true,
-              absolutePosition: { y: 495 }
+              absolutePosition: { x: 80, y: 495 }
             },
             {
               text: 'ผู้อำนวยการสถาบันชีววิทยาศาสตร์โมเลกุล', fontSize: 12, bolditalics: true,
-              absolutePosition: { y: 520 }
+              absolutePosition: { x: 90, y: 520 }
             }
           ],
         ]
