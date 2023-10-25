@@ -23,7 +23,7 @@ const createPDF = async (PdfForm) => {
       bolditalics: 'fontello.ttf'
     }
   };
-  pdfMake.createPdf(docDefinition).open()
+  //pdfMake.createPdf(docDefinition).open()
   const pdfDocGenerator = pdfMake.createPdf(docDefinition)
   return pdfDocGenerator
 };

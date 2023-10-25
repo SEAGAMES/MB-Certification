@@ -78,12 +78,41 @@
               accept=".xls, .xlsx, .csv"
             />
             <v-spacer></v-spacer>
-            <v-btn class="mt-n7 mx-2" size="small" color="indigo" icon="mdi-cloud-upload"></v-btn>
+            <v-btn
+              v-if="save_to_db"
+              @click="showDialog = true"
+              class="mt-n7 mx-2"
+              size="small"
+              color="indigo"
+              icon="mdi-cloud-upload"
+            ></v-btn>
           </v-row>
         </v-card-text>
         <v-divider class="mt-12"></v-divider>
       </v-card>
     </v-col>
+
+    <!-- 
+    dialog confirm save data to db -->
+    <v-dialog v-model="showDialog" max-width="300">
+      <v-card>
+        <v-card-title> save certificate to database </v-card-title>
+        <v-card-text>
+          Are you sure you want to perform this action?
+        </v-card-text>
+        <v-card-actions class="text-center">
+          <v-btn color="red darken-1" text @click="showDialog = false"
+            >Cancel</v-btn
+          >
+          <v-btn
+            color="green darken-1"
+            :loading="loadingBtn"
+            @click="savePdfToDB"
+            >Confirm</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
   <v-row justify="center">
     <div>
@@ -116,6 +145,9 @@ export default {
       base_64: null,
       excel_array: null,
       preview: false,
+      save_to_db: false,
+      showDialog: false,
+      loadingBtn: false,
     };
   },
   async mounted() {},
@@ -148,7 +180,15 @@ export default {
         iframe.style.height = "600px"; // เปลี่ยนเป็นค่าที่คุณต้องการ
       });
       this.preview = true;
-
+      this.save_to_db = true;
+    },
+    async savePdfToDB() {
+      this.loadingBtn = true;
+      setTimeout(async () => {
+        console.log("save");
+        this.loadingBtn = false;
+        this.showDialog = false
+      }, 1500);
       // const result = await createCertificate.createCertificate(this.form);
       // console.log(result)
     },
@@ -160,3 +200,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.text-center {
+  display: flex;
+  justify-content: right;
+}
+</style>
