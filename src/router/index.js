@@ -4,19 +4,29 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    component: () => import('../views/Certification-PDF.vue'),
+    component: () => import('../views/Certificate-PDF.vue'),
     children: [
       {
         path: '',
-        name: 'Certification',
+        name: 'Certificate',
         component: () => import('@/views/Home.vue'),
       },
     ],
   },
   {
-    path: '/certification-pdf',
-    name: 'Certification-PDF',
-    component: () => import('../views/Certification-PDF.vue'),
+    path: '/certificate-pdf',
+    name: 'Certificate-PDF',
+    component: () => import('../views/Certificate-PDF.vue'),
+  },
+  {
+    path: '/certificate-master',
+    name: 'Certificate-Master',
+    component: () => import('../views/Certificate-Master.vue'),
+  },
+  {
+    path: '/certificate-edit',
+    name: 'Certificate-Edit',
+    component: () => import('../views/Certificate-Edit.vue'),
   },
 ]
 
