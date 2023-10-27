@@ -30,7 +30,7 @@ const createPDF = async (PdfForm) => {
 
 
 const certification_pdf = async (excel, form) => {
-  console.log(form)
+  // console.log(form)
   const docDefinition = {
     pageSize: 'A4',
     pageOrientation: 'landscape',
@@ -84,7 +84,7 @@ function signOption(form) {
   if (form.language === 'TH') {
     if (form.two_sign) {
       if (form.sign) {
-        console.log('TH 2Sign Sign')
+        // console.log('TH 2Sign Sign')
         data =
         {
           columns: [
@@ -128,7 +128,7 @@ function signOption(form) {
           ]
         }
       } else { //TH 2 ลายเซ็น ผอ. ไม่เซ็น
-        console.log('TH 2Sign NoSign')
+        // console.log('TH 2Sign NoSign')
       }
     } else { // 1 ลายเซ็น 
       if (form.sign) { // TH 1 ลายเซ็น ผอ. เซ็น
@@ -140,15 +140,15 @@ function signOption(form) {
             absolutePosition: { x: 90, y: 410 }
           }
         ]
-        console.log('TH 1Sign Sign')
+        // console.log('TH 1Sign Sign')
       } else { // 1 ลายเซ็น ผอ. ไม่เซ็น
-        console.log('TH 1Sign Sign')
+        // console.log('TH 1Sign Sign')
       }
     }
   } else { // ENG
     if (form.two_sign) {
       if (form.sign) {
-        console.log('ENG 2Sign Sign')
+        // console.log('ENG 2Sign Sign')
         data = [
           {
             image: 'sign',
@@ -158,7 +158,7 @@ function signOption(form) {
           },
         ]
       } else { // ENG 2 ลายเซ็น ผอ. ไม่เซ็น
-        console.log('ENG 2Sign NoSign')
+        // console.log('ENG 2Sign NoSign')
         data = [
           // {
           //   text: '(............................................)',
@@ -172,7 +172,7 @@ function signOption(form) {
       }
     } else { // 1 ลายเซ็น 
       if (form.sign) { // ENG 1 ลายเซ็น ผอ. เซ็น
-        console.log('ENG 1Sign Sign')
+        // console.log('ENG 1Sign Sign')
         data = [
           {
             image: 'sign',
@@ -182,7 +182,7 @@ function signOption(form) {
           }
         ]
       } else { // ENG 1 ลายเซ็น ผอ. ไม่เซ็น
-        console.log('ENG 1Sign Sign')
+        // console.log('ENG 1Sign Sign')
         data = [
           // {
           //   text: '(............................................)',
@@ -197,7 +197,7 @@ function signOption(form) {
 
 function run(excel, form) {
   let s = []
-  console.log(form.pj_code.length)
+  // console.log(form.pj_code.length)
   signOption(form)
   excel.forEach((e, index) => {
     s.push(

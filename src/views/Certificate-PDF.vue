@@ -123,10 +123,10 @@
 </template>
 
 <script>
-// import create_pdf from "@/js/cer_th";
 import * as XLSX from "xlsx";
+import Swal from "sweetalert2";
 import createPDF from "../service/apiCreatePDF";
-//import createCertificate from "../service/apiCertificate";
+import apiCertificate from "../service/apiCertificate";
 
 export default {
   data() {
@@ -152,6 +152,16 @@ export default {
   },
   async mounted() {},
   methods: {
+    showAlert(icon, title) {
+      Swal.fire({
+        position: "center",
+        icon: icon,
+        title: title,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    },
+
     async add_file() {
       const file = this.$refs.myFiles.files[0];
       const data = await file.arrayBuffer();
@@ -182,15 +192,32 @@ export default {
       this.preview = true;
       this.save_to_db = true;
     },
+
     async savePdfToDB() {
       this.loadingBtn = true;
       setTimeout(async () => {
-        console.log("save");
+        // check ว่า code ใบเซอร์ซ้ำมั้ย
+        const result = await apiCertificate.duplicateCheck(this.form.pj_code);
+
+        // กรณีไม่ซ้ำ
+        if (result.data.msg === "ok") {
+          const resultInsert = await apiCertificate.createCertificate(
+            this.form,
+            this.excel_array
+          );
+          if (resultInsert.data.msg === "ok") {
+            this.showAlert("success", "บันทักข้อมูลสำเร็จ");
+          } else {
+            this.showAlert("error", "ชื่อโครงการนี้ซ้ำ");
+          }
+        // กรณีซ้ำ
+        } else {
+          this.showAlert("error", "ชื่อโครงการนี้ซ้ำ");
+        }
+
         this.loadingBtn = false;
-        this.showDialog = false
+        this.showDialog = false;
       }, 1500);
-      // const result = await createCertificate.createCertificate(this.form);
-      // console.log(result)
     },
   },
   watch: {

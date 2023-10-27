@@ -14,6 +14,11 @@ const routes = [
     ],
   },
   {
+    path: '/certificate-main',
+    name: 'Certificate-Main',
+    component: () => import('../views/MainPage.vue'),
+  },
+  {
     path: '/certificate-pdf',
     name: 'Certificate-PDF',
     component: () => import('../views/Certificate-PDF.vue'),
