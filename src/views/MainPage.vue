@@ -1,15 +1,15 @@
 <template>
   <v-card>
     <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
-      <v-tab :value="one">Create PDF</v-tab>
-      <v-tab :value="two">Certification</v-tab>
-    </v-tabs>
+      <v-tab :value="one" @click.prevent="++keycomponent">Create PDF</v-tab>
+      <v-tab :value="two" @click.prevent="++keycomponent">Certification</v-tab>
+       </v-tabs>
     <v-window v-model="tab">
       <v-window-item value="one"
-        ><CertificatePDF></CertificatePDF
+        ><CertificatePDF :key="keycomponent"></CertificatePDF
       ></v-window-item>
       <v-window-item value="two"
-        ><CertificateMaster></CertificateMaster
+        ><CertificateMaster :key="keycomponent"></CertificateMaster
       ></v-window-item>
     </v-window>
   </v-card>
@@ -25,7 +25,8 @@ export default {
   data: () => ({
     tab: "one",
     one: 'one',
-    two: 'two'
+    two: 'two',
+    keycomponent:1
   }),
 };
 </script>

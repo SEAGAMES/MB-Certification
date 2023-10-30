@@ -205,14 +205,17 @@ export default {
             this.form,
             this.excel_array
           );
+          // กรณี insert master เเละ detail สำเร็จ
           if (resultInsert.data.msg === "ok") {
+            const data = await apiCertificate.getDataCertificate();
+            this.$store.state.certificate_data = data.data       
             this.showAlert("success", "บันทักข้อมูลสำเร็จ");
           } else {
-            this.showAlert("error", "ชื่อโครงการนี้ซ้ำ");
+            this.showAlert("error", "error");
           }
         // กรณีซ้ำ
         } else {
-          this.showAlert("error", "ชื่อโครงการนี้ซ้ำ");
+          this.showAlert("error", "รหัสโครงการนี้ซ้ำ");
         }
 
         this.loadingBtn = false;

@@ -76,6 +76,7 @@ export default {
   },
 
   async mounted() {
+    console.log('ddd')
     this.getDataCertificate();
   },
 
@@ -94,10 +95,11 @@ export default {
         if (result.isConfirmed) {
           const result = await apiCertificate.deleteCertificate(pj_code);
           console.log(result.data.msg);
-          if(result.data.msg === 'ok') {
-            console.log('ลบ')          }
-
-          Swal.fire(`ลบ ${pj_code} แล้ว!"`, "ไฟล์ของคุณถูกลบแล้ว.", "success");
+          if (result.data.msg === "ok") {
+            Swal.fire(`ลบ ${pj_code} แล้ว!"`, "ไฟล์ของคุณถูกลบแล้ว.", "success");
+          } else {
+            Swal.fire(`การลบ ${pj_code} ผิดพลาด!"`, "", "error");
+          }
         }
       });
     },
@@ -123,8 +125,7 @@ export default {
 
     async deleteCertificate(pj_code) {
       this.deleteAlert(pj_code);
-      // const result = await apiCertificate.deleteCertificate(pj_code);
-      // console.log(result.data.msg);
+      this.getDataCertificate()
     },
   },
 };

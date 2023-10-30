@@ -257,7 +257,7 @@ function run(excel, form) {
               absolutePosition: { x: 330, y: 495 }
             },
             {
-              text: `${form.position}`, fontSize: 12, bolditalics: true,
+              text: `${form.add_position}`, fontSize: 12, bolditalics: true,
               absolutePosition: { x: 335, y: 520 }
             },
           ]

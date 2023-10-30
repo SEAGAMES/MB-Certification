@@ -4,13 +4,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    component: () => import('../views/Certificate-PDF.vue'),
+    component: () => import('../views/MainPage.vue'),
     children: [
-      {
-        path: '',
-        name: 'Certificate',
-        component: () => import('@/views/Home.vue'),
-      },
+
     ],
   },
   {
