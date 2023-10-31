@@ -1,7 +1,18 @@
 <template>
   <v-container>
-    <v-card
-      ><v-table>
+    <v-card>
+      <v-card-title>
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          @click="filteredData"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-table :search="search">
         <thead>
           <tr>
             <th>ลำดับ</th>
@@ -21,7 +32,7 @@
             <td>
               <div style="display: flex; gap: 10px">
                 <v-icon
-                  @click="editCertificate"
+                  @click="editCertificate(item)"
                   style="color: rgb(243, 156, 18)"
                   >mdi-pencil</v-icon
                 >
@@ -46,6 +57,7 @@ import apiCertificate from "@/service/apiCertificate";
 export default {
   data() {
     return {
+      search: "",
       data_certificate: [],
       dataItem: {
         name: "game",
@@ -76,11 +88,18 @@ export default {
   },
 
   async mounted() {
-    console.log('ddd')
-    this.getDataCertificate();
+    await this.getDataCertificate();
   },
 
   methods: {
+    async search_filter() {
+      if (this.search.length > 0) {
+        const result = await apiCertificate.getDataFilter(this.search);
+        this.dataLoad = result.data;
+      } else {
+        this.getDataCertificate()
+      }
+    },
     deleteAlert(pj_code) {
       Swal.fire({
         title: "คุณแน่ใจหรือไม่ที่จะลบ?",
@@ -96,7 +115,12 @@ export default {
           const result = await apiCertificate.deleteCertificate(pj_code);
           console.log(result.data.msg);
           if (result.data.msg === "ok") {
-            Swal.fire(`ลบ ${pj_code} แล้ว!"`, "ไฟล์ของคุณถูกลบแล้ว.", "success");
+            this.getDataCertificate();
+            Swal.fire(
+              `ลบ ${pj_code} แล้ว!"`,
+              "ไฟล์ของคุณถูกลบแล้ว.",
+              "success"
+            );
           } else {
             Swal.fire(`การลบ ${pj_code} ผิดพลาด!"`, "", "error");
           }
@@ -110,23 +134,33 @@ export default {
       //console.log(this.dataLoad);
     },
 
-    editCertificate() {
-      // ส่งข้อมูลไปยังคอมโพนเนนต์ปลายทางผ่าน Props
-      const dataX = {
-        name: "game",
-        year: 18,
-      };
-      console.log(dataX);
-      this.$router.push({
+    editCertificate(data) {
+    this.$store.state.certificate_data = data      
+    this.$router.push({
         name: "Certificate-Edit", // ชื่อเส้นทาง
-        param: { dataItem: dataX }, // ส่งข้อมูลผ่านพารามิเตอร์
       });
+   
     },
 
     async deleteCertificate(pj_code) {
       this.deleteAlert(pj_code);
-      this.getDataCertificate()
     },
   },
+  computed: {
+    filteredData() {
+      let dataFilter = this.search_filter();
+      console.log(dataFilter);
+      return dataFilter;
+    },
+  },
+
+  // computed: {
+  //   filteredData() {
+  //       let dataFilter = this.dataLoad.data.filter((item) => {
+  //         return item.pj_code === this.search
+  //       })
+  //       return dataFilter
+  //   },
+  // },
 };
 </script>

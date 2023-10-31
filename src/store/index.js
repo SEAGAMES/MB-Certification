@@ -3,7 +3,7 @@ import { createStore } from 'vuex';
 
 const store = createStore({
   state: {
-    certificate_data: []
+    certification_edit : []
   },
   mutations: {
     // มิวเทชันของคุณ

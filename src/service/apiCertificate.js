@@ -13,9 +13,14 @@ const getDataCertificate = async() => {
     return data
 }
 
+const getDataFilter = async(pj_code) => {
+    const data = axios.get(`${apiUrl}data_filter/${pj_code}`)
+    return data
+}
+
 const duplicateCheck = async(pj_code) => {
-    const result = axios.get(`${apiUrl}data_duplicate/${pj_code}`)
-    return result
+    const data = axios.get(`${apiUrl}data_duplicate/${pj_code}`)
+    return data
 }
 
 const deleteCertificate = async(pj_code) => {
@@ -26,6 +31,7 @@ const deleteCertificate = async(pj_code) => {
 export default {
     createCertificate,
     getDataCertificate,
+    getDataFilter,
     duplicateCheck,
     deleteCertificate
 }

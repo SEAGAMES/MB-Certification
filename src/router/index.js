@@ -29,6 +29,11 @@ const routes = [
     name: 'Certificate-Edit',
     component: () => import('../views/Certificate-Edit.vue'),
   },
+  {
+    path: '/test-filter',
+    name: 'Test-Filter',
+    component: () => import('../views/Test-Filter.vue'),
+  },
 ]
 
 const router = createRouter({
