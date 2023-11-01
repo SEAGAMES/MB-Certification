@@ -1,4 +1,8 @@
 <template>
+  <div class="center-text">
+    <h1>Edit</h1>
+    <!-- ส่วนอื่น ๆ ของเท็มเพลต -->
+  </div>
   <v-row justify="center">
     <v-col cols="12" sm="10" md="8" lg="6">
       <v-card ref="form" height="265">
@@ -43,7 +47,10 @@
               ><v-text-field
                 label="รหัสโครงการ"
                 v-model="$store.state.certificate_data.pj_code"
-                @input="$store.state.certificate_data.pj_code = $event.target.value.toUpperCase()"
+                @input="
+                  $store.state.certificate_data.pj_code =
+                    $event.target.value.toUpperCase()
+                "
               ></v-text-field
             ></v-col>
             <v-col
@@ -120,7 +127,9 @@
     </div>
   </v-row>
 </template>
+
  <script>
+ import apiCertificate from "../service/apiCertificate"
 export default {
   props: ["dataX"],
   data() {
@@ -146,9 +155,21 @@ export default {
   },
   mounted() {
     console.log(this.$store.state.certificate_data);
+    this.getDataCertificateDetail()
   },
+  methods: {
+    async getDataCertificateDetail() {
+      const dataDetail = await apiCertificate.getDataCertificate_detail()
+      console.log('dataDetail : ', dataDetail) 
+    }
+  }
 };
 </script>
  
- <style>
+<style>
+.center-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

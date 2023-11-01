@@ -207,7 +207,7 @@ export default {
           );
           // กรณี insert master เเละ detail สำเร็จ
           if (resultInsert.data.msg === "ok") {
-            await apiCertificate.getDataCertificate();
+            await apiCertificate.getDataCertificate_master();
             // const data = await apiCertificate.getDataCertificate();
             // this.$store.state.certificate_data = data.data       
             this.showAlert("success", "บันทักข้อมูลสำเร็จ");

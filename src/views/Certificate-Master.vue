@@ -88,7 +88,7 @@ export default {
   },
 
   async mounted() {
-    await this.getDataCertificate();
+    await this.getDataCertificateMaster();
   },
 
   methods: {
@@ -97,7 +97,7 @@ export default {
         const result = await apiCertificate.getDataFilter(this.search);
         this.dataLoad = result.data;
       } else {
-        this.getDataCertificate()
+        this.getDataCertificateMaster()
       }
     },
     deleteAlert(pj_code) {
@@ -115,7 +115,7 @@ export default {
           const result = await apiCertificate.deleteCertificate(pj_code);
           console.log(result.data.msg);
           if (result.data.msg === "ok") {
-            this.getDataCertificate();
+            this.getDataCertificateMaster();
             Swal.fire(
               `ลบ ${pj_code} แล้ว!"`,
               "ไฟล์ของคุณถูกลบแล้ว.",
@@ -128,8 +128,8 @@ export default {
       });
     },
 
-    async getDataCertificate() {
-      const data = await apiCertificate.getDataCertificate();
+    async getDataCertificateMaster() {
+      const data = await apiCertificate.getDataCertificate_master();
       this.dataLoad = data.data;
       //console.log(this.dataLoad);
     },

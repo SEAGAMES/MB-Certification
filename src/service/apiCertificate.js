@@ -8,8 +8,13 @@ const createCertificate = async(data, excel) => {
     return result
 }
 
-const getDataCertificate = async() => {
+const getDataCertificate_master = async() => {
     const data = axios.get(`${apiUrl}data_certificate`)
+    return data
+}
+
+const getDataCertificate_detail = async() => {
+    const data = axios.get(`${apiUrl}data_detail`)
     return data
 }
 
@@ -30,8 +35,9 @@ const deleteCertificate = async(pj_code) => {
   
 export default {
     createCertificate,
-    getDataCertificate,
+    getDataCertificate_master,
     getDataFilter,
     duplicateCheck,
-    deleteCertificate
+    deleteCertificate,
+    getDataCertificate_detail
 }
