@@ -96,6 +96,25 @@
         </v-card-text>
         <v-divider class="mt-12"></v-divider>
       </v-card>
+      <v-card
+        ><v-table>
+          <thead>
+            <tr>
+              <th class="text-left">ลำดับ</th>
+              <th class="text-left">คำนำหน้า</th>
+              <th class="text-left">ชื่อ-นามสกุล</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in dataDetail.data" :key="item.name">
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.prefix }}</td>
+              <td>{{ item.name }}</td>
+              <!-- <td><v-text-field variant="outlined" disabled dense></v-text-field></td>
+              <td><input type="text" /></td> -->
+            </tr>
+          </tbody> </v-table
+      ></v-card>
     </v-col>
 
     <!-- 
@@ -129,22 +148,12 @@
 </template>
 
  <script>
- import apiCertificate from "../service/apiCertificate"
+import apiCertificate from "../service/apiCertificate";
 export default {
   props: ["dataX"],
   data() {
     return {
-      form: {
-        pj_name: "Molecular biology for life and medicine",
-        pj_code: "PAR-ASST-AA",
-        date_desc: "ระหว่างวันที่ 2-4 ตุลาคม 2566",
-        currentYear: "",
-        add_name: "อาจารย์ ธนกฤต นิ่มนวล",
-        add_position: "ผู้อำนวยการสถาบันชีววิทยาศาสตร์โมเลกุล",
-        language: "TH",
-        sign: false,
-        two_sign: false,
-      },
+      dataDetail: [],
       base_64: null,
       excel_array: null,
       preview: false,
@@ -155,14 +164,16 @@ export default {
   },
   mounted() {
     console.log(this.$store.state.certificate_data);
-    this.getDataCertificateDetail()
+    this.getDataCertificateDetail();
   },
   methods: {
     async getDataCertificateDetail() {
-      const dataDetail = await apiCertificate.getDataCertificate_detail()
-      console.log('dataDetail : ', dataDetail) 
-    }
-  }
+      const data = await apiCertificate.getDataCertificate_detail(
+        this.$store.state.certificate_data
+      );
+      this.dataDetail = data.data;
+    },
+  },
 };
 </script>
  

@@ -13,8 +13,9 @@ const getDataCertificate_master = async() => {
     return data
 }
 
-const getDataCertificate_detail = async() => {
-    const data = axios.get(`${apiUrl}data_detail`)
+const getDataCertificate_detail = async(datalist) => {
+    console.log('API : ', datalist)
+    const data = axios.post(`${apiUrl}data_detail`, datalist)
     return data
 }
 
