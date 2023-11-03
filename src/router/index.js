@@ -4,25 +4,35 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: () => import('../views/MainPage.vue'),
     children: [
-      {
-        path: '',
-        name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
-      },
+
     ],
   },
   {
-    path: '/certification-pdf',
-    name: 'Certification-PDF',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import('../views/Certification-PDF.vue'),
+    path: '/certificate-main',
+    name: 'Certificate-Main',
+    component: () => import('../views/MainPage.vue'),
+  },
+  {
+    path: '/certificate-pdf',
+    name: 'Certificate-PDF',
+    component: () => import('../views/Certificate-PDF.vue'),
+  },
+  {
+    path: '/certificate-master',
+    name: 'Certificate-Master',
+    component: () => import('../views/Certificate-Master.vue'),
+  },
+  {
+    path: '/certificate-edit',
+    name: 'Certificate-Edit',
+    component: () => import('../views/Certificate-Edit.vue'),
+  },
+  {
+    path: '/test-filter',
+    name: 'Test-Filter',
+    component: () => import('../views/Test-Filter.vue'),
   },
 ]
 

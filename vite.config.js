@@ -23,8 +23,8 @@ export default defineConfig({
     ViteFonts({
       google: {
         families: [{
-          name: 'Roboto',
-          styles: 'wght@100;300;400;500;700;900',
+          // name: 'Roboto',
+          // styles: 'wght@100;300;400;500;700;900',
         }],
       },
     }),
@@ -45,6 +45,6 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 3000,
+    port: 3300,
   },
 })
