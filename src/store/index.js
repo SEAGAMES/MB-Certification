@@ -3,6 +3,7 @@ import { createStore } from 'vuex';
 
 const store = createStore({
   state: {
+    tabPage: 'one',
     certification_edit : []
   },
   mutations: {

@@ -3,7 +3,7 @@
     <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
       <v-tab :value="one" @click.prevent="++keycomponent">Create PDF</v-tab>
       <v-tab :value="two" @click.prevent="++keycomponent">Certification</v-tab>
-       </v-tabs>
+    </v-tabs>
     <v-window v-model="tab">
       <v-window-item value="one"
         ><CertificatePDF :key="keycomponent"></CertificatePDF
@@ -22,11 +22,13 @@ export default {
     CertificatePDF,
     CertificateMaster, // ลงทะเบียน Certificate-PDF เพื่อใช้งาน
   },
-  data: () => ({
-    tab: "one",
-    one: 'one',
-    two: 'two',
-    keycomponent:1
-  }),
+  data: function () {
+    return {
+      tab: this.$store.state.tabPage,
+      one: "one",
+      two: "two",
+      keycomponent: 1,
+    };
+  },
 };
 </script>

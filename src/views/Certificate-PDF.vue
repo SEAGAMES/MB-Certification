@@ -26,7 +26,6 @@
                     label="ใส่ลายเซ็น ผอ."
                     v-model="form.sign"
                     color="indigo"
-                    value="indigo"
                     hide-details
                   ></v-checkbox></v-col
                 ><v-col
@@ -34,7 +33,6 @@
                     label="2 ลายเซ็น"
                     v-model="form.two_sign"
                     color="indigo-darken-3"
-                    value="indigo-darken-3"
                     hide-details
                   ></v-checkbox></v-col></v-row></v-col
           ></v-row>

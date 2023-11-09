@@ -97,7 +97,7 @@ export default {
         const result = await apiCertificate.getDataFilter(this.search);
         this.dataLoad = result.data;
       } else {
-        this.getDataCertificateMaster()
+        this.getDataCertificateMaster();
       }
     },
     deleteAlert(pj_code) {
@@ -135,11 +135,15 @@ export default {
     },
 
     editCertificate(data) {
-    this.$store.state.certificate_data = data      
-    this.$router.push({
-        name: "Certificate-Edit", // ชื่อเส้นทาง
+      // แปลง 0 กับ 1 เป็น true กับ false
+      data.sign = data.sign === 1;
+      data.two_sign = data.two_sign === 1;
+
+      localStorage.setItem("certificate_data", JSON.stringify(data));
+      this.$store.state.certificate_data = data;
+      this.$router.push({
+        name: "Certificate-Edit", 
       });
-   
     },
 
     async deleteCertificate(pj_code) {
