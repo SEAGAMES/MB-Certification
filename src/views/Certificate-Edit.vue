@@ -89,12 +89,11 @@
               color="indigo"
               icon="mdi-cloud-upload"
             ></v-btn> -->
+
+            <!-- เพิ่มรายชื่อ -->
             <v-spacer></v-spacer>
             <v-btn
-              @click="
-                mangeName.dialog = true;
-                selectPopupShow = 1;
-              "
+              @click="addName()"
               class="mt-n7 mx-2"
               size="small"
               color="green"
@@ -122,10 +121,7 @@
               <td>
                 <div style="display: flex; gap: 10px">
                   <v-icon
-                    @click="
-                      mangeName.dialog = true;
-                      selectPopupShow = 2;
-                    "
+                    @click="this.editName(index)"
                     style="color: rgb(243, 156, 18)"
                     >mdi-pencil</v-icon
                   >
@@ -168,7 +164,7 @@
   </v-row>
 
   <v-row justify="center">
-    <v-btn color="success" @click="edit_certificate">Confirm</v-btn>
+    <v-btn color="success" @click="confirmUpdate">Confirm</v-btn>
     <v-btn
       class="ml-5"
       color="red"
@@ -229,12 +225,11 @@ export default {
 
       selectPopupShow: null,
       dataStorage: [],
+      indexEdit: null,
       mangeName: {
         dialog: false,
-        pj_code: null,
-        no: 1,
-        prefix: "นาย",
-        name: "ซีเกมส์ eiei",
+        prefix: null,
+        name: null,
       },
     };
   },
@@ -244,13 +239,41 @@ export default {
 
     // แปลงข้อมูลที่ดึงมาให้กลายเป็น Object
     this.dataStorage = JSON.parse(certificate_data);
-    this.mangeName.pj_code = this.dataStorage.pj_code
-    console.log("local Storage : ", this.dataStorage);
-    //console.log("store : ", this.$store.state.certificate_data.pj_code);
-    // this.mangeName.pj_code = data
+    this.mangeName.pj_code = this.dataStorage.pj_code;
     this.getDataCertificateDetail();
   },
   methods: {
+    confirmUpdate() {
+      Swal.fire({
+        title: "บันทึกการเปลี่ยนแปลง ?",
+        icon: "warning",
+        showCancelButton: true, // แสดงปุ่ม "Cancel"
+        confirmButtonColor: "#228B22",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "บันทึก",
+        cancelButtonText: "ยกเลิก", // ปุ่ม "Cancel" ที่กำหนดค่าข้อความเป็น 'ยกเลิก'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const result = await apiCertificate.updateCertificate(
+            this.dataStorage,
+            this.dataDetail.data
+          );
+          console.log(result.data.msg);
+          if (result.data.msg === "ok") {
+            // set localStorage
+            localStorage.setItem("certificate_data", JSON.stringify(this.dataStorage));
+            this.$store.state.certificate_data = this.dataStorage;
+            this.$router.push({
+              name: "Certificate-Edit",
+            });
+            this.showAlert("success", "แก้ไขข้อมูลสำเร็จ");
+          } else {
+            this.showAlert("error", "ไม่สามารถแก้ไขได้กรุณาลองใหม่อีกครัง");
+          }
+        }
+      });
+    },
+
     async getDataCertificateDetail() {
       const data = await apiCertificate.getDataCertificate_detail(
         this.dataStorage
@@ -268,29 +291,40 @@ export default {
       });
     },
 
-    async edit_certificate() {
-      const result = await apiCertificate.updateCertificate(
-        this.dataStorage,
-        this.dataDetail.data
-        // this.$store.state.certificate_data,
-        // this.dataDetail.data
-      );
-      console.log(result);
+    // เมื่อกดแก้ไขรายชื่อ
+    editName(index) {
+      this.indexEdit = index;
+      this.mangeName.dialog = true;
+      (this.mangeName.prefix = this.dataDetail.data[this.indexEdit].prefix),
+        (this.mangeName.name = this.dataDetail.data[this.indexEdit].name),
+        (this.selectPopupShow = 2);
     },
 
+    // เมื่อกดปุ่มเพิ่มรายชื่อ
+    addName() {
+      this.mangeName = {
+        dialog: true,
+        prefix: null,
+        name: null,
+      };
+      this.selectPopupShow = 1;
+    },
+
+    // เมื่อกดปุ่ม บันทึกใน dialog
     async saveName() {
       this.mangeName.dialog = false;
+      // กรณีเพิ่มรายชื่อ
       if (this.selectPopupShow === 1) {
         this.dataDetail.data.push(this.mangeName);
-        console.log('data : ', this.dataDetail.data);
       } else {
-        const result = await apiCertificate.editName(this.mangeName);
-        if (result.data.msg === "ok") {
-          this.showAlert("success", "แก้ไขข้อมูลสำเร็จ");
-        } else {
-          this.showAlert("error", "ไม่สามารถแก้ไขได้กรุณาลองใหม่อีกครัง");
-        }
+        // กรณีแก้ไขรายชื่อ
+        this.dataDetail.data[this.indexEdit] = this.mangeName;
       }
+      this.mangeName = {
+        dialog: false,
+        prefix: null,
+        name: null,
+      };
       this.selectPopupShow = null;
     },
 
