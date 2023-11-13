@@ -2,7 +2,6 @@ import axios from "axios"
 import { apiUrl } from '../service/getUrl'
 
 const createCertificate = async(data, excel) => {
-    console.log(excel)
     const newData = []
     newData.push(data, excel)
     const result = axios.post(`${apiUrl}create_certificate`, newData)
@@ -10,7 +9,6 @@ const createCertificate = async(data, excel) => {
 }
 
 const updateCertificate = async(data, listName) => {
-    console.log('API : ' , data, listName)
     const newData = []
     newData.push(data, listName)
     const result = axios.post(`${apiUrl}update_certificate`, newData)
@@ -38,9 +36,7 @@ const duplicateCheck = async(pj_code) => {
 }
 
 const editName = async(data) => {
-    console.log('มา API : ', data)
     const result = axios.post(`${apiUrl}updateName`, data)
-    console.log(result)
     return result
 }
 

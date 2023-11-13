@@ -30,7 +30,7 @@ const createPDF = async (PdfForm) => {
 
 
 const certification_pdf = async (excel, form) => {
-  // console.log(form)
+  // console.log(excel, form)
   const docDefinition = {
     pageSize: 'A4',
     pageOrientation: 'landscape',
@@ -96,35 +96,7 @@ function signOption(form) {
                 height: 80,
                 absolutePosition: { x: -200, y: 410 }
               },
-              // {
-              //   text: 'ศาสตราจารย์ ดร. นายแพทย์นรัตถพล เจริญพันธุ์',
-              //   fontSize: 12,
-              //   bolditalics: true,
-              //   absolutePosition: { x: -220, y: 495 }
-              // },
-              // {
-              //   text: 'ผู้อำนวยการสถาบันชีววิทยาศาสตร์โมเลกุล', fontSize: 12, bolditalics: true,
-              //   absolutePosition: { x: -220, y: 520 }
-              // }
             ],
-            // [
-            //   // second column consists of paragraphs
-            //   // {
-            //   //   text: '(............................................)',
-            //   //   absolutePosition: { x: 335, y: 450 }
-            //   // },
-            //   {
-            //     text: `${form.add_name}`,
-            //     fontSize: 12,
-            //     bolditalics: true,
-            //     absolutePosition: { x: 330, y: 495 }
-            //   },
-            //   {
-            //     text: `${form.position}`, fontSize: 12, bolditalics: true,
-            //     absolutePosition: { x: 335, y: 520 }
-            //     // absolutePosition: form.add_name.length <= 30 ? { x: 520 - countDivisions(form.add_name.length), y: 490 } : { x: 450, y: 490 }
-            //   },
-            // ]
           ]
         }
       } else { //TH 2 ลายเซ็น ผอ. ไม่เซ็น
@@ -197,37 +169,79 @@ function signOption(form) {
 
 function run(excel, form) {
   let s = []
-  // console.log(form.pj_code.length)
+  let valueX = 0
+  let valueMargin = 15
+
+  if (form.pj_code.length === 8) {
+    valueX = 619
+  } else if (form.pj_code.length === 12) {
+    valueX = 600
+  }
+  else if (form.pj_code.length === 13) {
+    valueX = 595
+  } else if (form.pj_code.length === 16) {
+    valueX = 579
+  } else if (form.pj_code.length === 17) {
+    valueX = 575
+  } else {
+    valueX = 589
+  }
+
+  // let text
+  // const firstThreeChars = form.pj_code.substring(0, 3); 
+  // if (firstThreeChars === 'PAR') {
+  //   console.log('คือ PAR')
+  // }
+
   signOption(form)
   excel.forEach((e, index) => {
+    // console.log(form.pj_code)
     s.push(
-      {
+      (form.language === "TH") ? {
         image: 'logo',
         width: 80
+      } : {
+        image: 'logo',
+        width: 80,
+        absolutePosition: { x: 50, y: 30 }
       },
+
       {
         text: 'CERTIFICATION NUMBER  ' + form.currentYear + '-' + form.pj_code + String(index + 1).padStart(4, '0'),
         fontSize: 9,
-        absolutePosition: { x: 590, y: 40 }
+        absolutePosition: { x: valueX, y: 40 }
       },
 
-      (form.pj_code.length <= 4) ? { qr: form.pj_code + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 708, y: 60 } } : { qr: form.pj_code + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 728, y: 60 } },
+      { qr: form.pj_code + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 753, y: 60 } },
 
-      (form.language === "Eng") ? { text: 'Institute of  Molecular Biosciences', color: '#1565C0', fontSize: 22 } : {},
-      (form.language === "Eng") ? { text: 'Mahidol University ', color: '#1565C0', fontSize: 22 } : {},
+      (form.language === "Eng") ? { text: 'Institute of  Molecular Biosciences', color: '#1565C0', fontSize: 22, absolutePosition: { x: 50, y: 120 } } : {},
+      (form.language === "Eng") ? { text: 'Mahidol University ', color: '#1565C0', fontSize: 22, absolutePosition: { x: 50, y: 150 } } : {},
 
-      (form.language === "TH") ? { text: 'เกียรติบัตรนี้ให้ไว้เพื่อแสดงว่า', margin: [0,15,0,0] } : { text: 'This is to certify that' },
+      (form.language === "TH") ? { text: 'เกียรติบัตรนี้ให้ไว้เพื่อแสดงว่า', margin: [0, 15, 0, 0] } : { text: 'This is to certify that', absolutePosition: { x: 50, y: 180 + valueMargin } },
 
-      {
+      (form.language === "Eng") ? {
+        text: e.prefix + ' ' + e.name, color: '#0D47A1', fontSize: 28, absolutePosition: { x: 50, y: 215 + valueMargin }
+      } : {
         text: e.prefix + ' ' + e.name, color: '#0D47A1', fontSize: 28
       },
 
       (form.language === "TH") ? {
         text: 'เข้าอบรมเชิงปฏิบัติการเรื่อง '
-      } : { text: 'participated in the practical training entitled' },
+      } : {},
 
-      (form.language === "TH") ? { text: "“" + form.pj_name + "”", color: '#1565C0', fontSize: 24 } : { text: form.pj_name, color: '#1565C0', fontSize: 24 },
+      (form.language === "Eng" && form.pj_code.substring(0, 3) === 'PAR') ? { text: 'participated in the practical training entitled', absolutePosition: { x: 50, y: 265 + valueMargin } } : (form.language === "Eng" && form.pj_code.substring(0, 4) === 'ASST') ? { text: 'is an assistant on practical training entitled', absolutePosition: { x: 50, y: 265 + valueMargin } } : {},
+
+      (form.language === "Eng") ? {
+        text: 'Student Science Training Program' + ' ' + form.currentYear, color: '#1565C0', fontSize: 22, absolutePosition: { x: 50, y: 300 + valueMargin }
+      } : {},
+
+
+      (form.language === "TH") ? { text: "“" + form.pj_name + "”", color: '#1565C0', fontSize: 24 } : {},
       { text: form.date },
+
+      (form.language === "TH") ? {
+        text: form.date_desc
+      } : { text: form.date_desc, absolutePosition: { x: 50, y: 345 + valueMargin } },
 
       (form.language === "TH") ? {
         text: 'ณ สถาบันชีววิทยาศาสตร์โมเลกุล มหาวิทยาลัยมหิดล'
@@ -238,14 +252,22 @@ function run(excel, form) {
       (form.two_sign) ? {
         columns: [
           [
-            {
+            (form.language === "TH") ? {
               text: 'ศาสตราจารย์ ดร. นายแพทย์นรัตถพล เจริญพันธุ์',
               fontSize: 12,
               bolditalics: true,
               absolutePosition: { x: -220, y: 495 }
+            } : {
+              text: 'Professor Narattaphol Charoenphandhu, M.D., Ph.D.',
+              fontSize: 12,
+              bolditalics: true,
+              absolutePosition: { x: -220, y: 495 }
             },
-            {
+            (form.language === "TH") ? {
               text: 'ผู้อำนวยการสถาบันชีววิทยาศาสตร์โมเลกุล', fontSize: 12, bolditalics: true,
+              absolutePosition: { x: -220, y: 520 }
+            } : {
+              text: 'Director', fontSize: 12, bolditalics: true,
               absolutePosition: { x: -220, y: 520 }
             }
           ],
@@ -265,65 +287,27 @@ function run(excel, form) {
       } : {
         columns: [
           [
-            {
+            (form.language === 'TH') ? {
               text: 'ศาสตราจารย์ ดร. นายแพทย์นรัตถพล เจริญพันธุ์',
               fontSize: 12,
               bolditalics: true,
               absolutePosition: { x: 80, y: 495 }
+            } : {
+              text: 'Professor Narattaphol Charoenphandhu, M.D., Ph.D.',
+              fontSize: 12,
+              bolditalics: true,
+              absolutePosition: { x: 80, y: 495 }
             },
-            {
+            (form.language === 'TH') ? {
               text: 'ผู้อำนวยการสถาบันชีววิทยาศาสตร์โมเลกุล', fontSize: 12, bolditalics: true,
+              absolutePosition: { x: 90, y: 520 }
+            } : {
+              text: 'Director', fontSize: 12, bolditalics: true,
               absolutePosition: { x: 90, y: 520 }
             }
           ],
         ]
-      } ,
-      //  { columns: [
-      //   {
-      //     image: 'sign',
-      //     width: 250,
-      //     height: 80,
-      //     absolutePosition: { x: -200, y: 400 }
-      //   },
-      //   {
-      //     text: '(............................................)',
-      //     absolutePosition: { x: 335, y: 450 }
-      //   }
-      // ]},
-
-      // {
-      //   alignment: 'justify',
-
-      //   columns: [
-      //     (form.language === "TH") ? {
-      //       text: 'ศาสตราจารย์ ดร. นายแพทย์นรัตถพล  เจริญพันธุ์', fontSize: 12, bolditalics: true,
-      //       absolutePosition: { x: 183, y: 490 }
-      //     } : {
-      //       text: 'Professor Narattaphol Charoenphandhu, M.D., Ph.D.', fontSize: 12, bolditalics: true,
-      //       absolutePosition: { x: 170, y: 500 }
-      //     },
-      //     {
-      //       text: `${form.add_name}`, fontSize: 12, bolditalics: true,
-      //       absolutePosition: { x: 520, y: 500 }
-      //       // absolutePosition: form.add_name.length <= 30 ? { x: 520 - countDivisions(form.add_name.length), y: 490 } : { x: 450, y: 490 }
-      //     },
-      //   ]// obj.reason.length === 2 ? [0, 0, 0, -20]
-      // },
-      // {
-      //   alignment: 'justify',
-
-      //   columns: [
-      // (form.language === "TH") ? {
-      //   text: 'ผู้อำนวยการสถาบันชีววิทยาศาสตร์โมเลกุล', fontSize: 12, bolditalics: true,
-      //   absolutePosition: { x: 195, y: 520 }
-      // } : { text: 'Director', fontSize: 12, bolditalics: true, absolutePosition: { x: 280, y: 520 } },
-      // {
-      //   text: `${form.position}`, fontSize: 12, bolditalics: true,
-      //   absolutePosition: { x: 475, y: 520 }
-      //   // absolutePosition: form.add_name.length <= 30 ? { x: 520 - countDivisions(form.add_name.length), y: 490 } : { x: 450, y: 490 }
-      // },
-      //   ]// obj.reason.length === 2 ? [0, 0, 0, -20]
-      // },
+      },
       {
         image: 'footer',
         width: 842,

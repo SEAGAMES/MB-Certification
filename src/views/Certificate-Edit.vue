@@ -72,26 +72,15 @@
               ></v-text-field></v-col
           ></v-row>
           <v-row>
-            <input
-              class="mt-n5 ml-3"
-              type="file"
-              @change.left="add_file()"
-              @click="this.$refs.myFiles.value = null"
-              ref="myFiles"
-              accept=".xls, .xlsx, .csv"
-            />
-            <!-- <v-spacer></v-spacer>
-            <v-btn
-              v-if="save_to_db"
-              @click="showDialog = true"
-              class="mt-n7 mx-2"
-              size="small"
-              color="indigo"
-              icon="mdi-cloud-upload"
-            ></v-btn> -->
-
             <!-- เพิ่มรายชื่อ -->
             <v-spacer></v-spacer>
+            <v-btn
+              @click="createPDFShow"
+              class="mt-n7 mx-2"
+              size="small"
+              color="orange"
+              icon="mdi-refresh"
+            ></v-btn>
             <v-btn
               @click="addName()"
               class="mt-n7 mx-2"
@@ -176,13 +165,6 @@
     >
   </v-row>
 
-  <v-row justify="center">
-    <div>
-      <!-- ใช้ <iframe> เพื่อแสดงไฟล์ PDF -->
-      <iframe :src="base_64" ref="pdfIframe" v-if="preview"></iframe>
-    </div>
-  </v-row>
-
   <!-- Popup ใส่ชื่อ-นามสกุล -->
   <v-dialog v-model="mangeName.dialog" max-width="400">
     <v-card>
@@ -207,11 +189,19 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <v-row justify="center">
+    <div>
+      <!-- ใช้ <iframe> เพื่อแสดงไฟล์ PDF -->
+      <iframe :src="base_64" ref="pdfIframe" v-if="preview"></iframe>
+    </div>
+  </v-row>
 </template>
 
  <script>
 import Swal from "sweetalert2";
 import apiCertificate from "../service/apiCertificate";
+import createPDF from "../service/apiCreatePDF";
 export default {
   data() {
     return {
@@ -258,10 +248,13 @@ export default {
             this.dataStorage,
             this.dataDetail.data
           );
-          console.log(result.data.msg);
+          // console.log(result.data.msg);
           if (result.data.msg === "ok") {
             // set localStorage
-            localStorage.setItem("certificate_data", JSON.stringify(this.dataStorage));
+            localStorage.setItem(
+              "certificate_data",
+              JSON.stringify(this.dataStorage)
+            );
             this.$store.state.certificate_data = this.dataStorage;
             this.$router.push({
               name: "Certificate-Edit",
@@ -272,6 +265,25 @@ export default {
           }
         }
       });
+    },
+
+    async createPDFShow() {
+      const pdfDocGenerator = await createPDF.certification_pdf(
+        this.dataDetail.data,
+        this.dataStorage
+      );
+
+      pdfDocGenerator.getDataUrl((dataUrl) => {
+        this.base_64 = dataUrl;
+        const iframe = this.$refs.pdfIframe;
+        iframe.src = dataUrl;
+
+        // กำหนดความกว้างและความสูงของ iframe ตรงนี้
+        iframe.style.width = "770px"; // เปลี่ยนเป็นค่าที่คุณต้องการ
+        iframe.style.height = "600px"; // เปลี่ยนเป็นค่าที่คุณต้องการ
+      });
+      this.preview = true;
+      this.save_to_db = true;
     },
 
     async getDataCertificateDetail() {

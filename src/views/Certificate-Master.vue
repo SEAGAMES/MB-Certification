@@ -113,7 +113,6 @@ export default {
       }).then(async (result) => {
         if (result.isConfirmed) {
           const result = await apiCertificate.deleteCertificate(pj_code);
-          console.log(result.data.msg);
           if (result.data.msg === "ok") {
             this.getDataCertificateMaster();
             Swal.fire(
@@ -153,18 +152,8 @@ export default {
   computed: {
     filteredData() {
       let dataFilter = this.search_filter();
-      console.log(dataFilter);
       return dataFilter;
     },
   },
-
-  // computed: {
-  //   filteredData() {
-  //       let dataFilter = this.dataLoad.data.filter((item) => {
-  //         return item.pj_code === this.search
-  //       })
-  //       return dataFilter
-  //   },
-  // },
 };
 </script>
