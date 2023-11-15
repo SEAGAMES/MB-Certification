@@ -46,7 +46,7 @@
                   id="pj_name"
                   v-model="form.pj_code"
                   :rules="textRule"
-                  @input="form.pj_code = $event.target.value.toUpperCase()"
+                  @input="handleInput"
                   required
                 ></v-text-field
               ></v-col>
@@ -157,12 +157,12 @@ export default {
 
       form: {
         pj_name: "TEST ENG FORM",
-        pj_code: "ASST-SSTP-01-",
+        pj_code: "PAR-HOO-01",
         date_desc: "7–18 August 2023",
         currentYear: "",
         add_name: "",
         add_position: "",
-        language: "Eng",
+        language: "TH",
         sign: true,
         two_sign: false,
       },
@@ -184,6 +184,17 @@ export default {
         showConfirmButton: false,
         timer: 2000,
       });
+    },
+
+    handleInput(event) {
+      // แปลงเป็นตัวพิมพ์ใหญ่
+      this.form.pj_code = event.target.value.toUpperCase();
+
+      // กรองเฉพาะภาษาอังกฤษและเครื่องหมาย "-"
+      this.form.pj_code = this.form.pj_code.replace(/[^A-Za-z0-9-]/g, '');
+
+      // จำกัดจำนวนตัวอักษรไม่เกิน 12 ตัว
+      this.form.pj_code = this.form.pj_code.slice(0, 12);
     },
 
     async add_file() {
