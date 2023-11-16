@@ -5,155 +5,143 @@
   </div>
   <v-row justify="center">
     <v-col cols="12" sm="10" md="8" lg="6">
-      <v-card ref="form" height="265">
-        <v-card-text>
-          <v-row
-            ><v-col>
-              <v-text-field
-                label="ชื่อโครงการ"
-                v-model="dataStorage.pj_name"
-              ></v-text-field></v-col
-            ><v-col
-              ><v-row
-                ><v-col>
-                  <v-switch
-                    v-model="dataStorage.language"
-                    hide-details
-                    true-value="Eng"
-                    false-value="TH"
-                    color="indigo"
-                    :label="`ฟอร์ม : ${dataStorage.language}`"
-                  ></v-switch> </v-col
-                ><v-col
-                  ><v-checkbox
-                    label="ใส่ลายเซ็น ผอ."
-                    v-model="dataStorage.sign"
-                    color="indigo"
-                    hide-details
-                  ></v-checkbox></v-col
-                ><v-col
-                  ><v-checkbox
-                    label="2 ลายเซ็น"
-                    v-model="dataStorage.two_sign"
-                    color="indigo-darken-3"
-                    hide-details
-                  ></v-checkbox></v-col></v-row></v-col
-          ></v-row>
-          <v-row class="mt-n8">
-            <v-col
-              ><v-text-field
-                label="รหัสโครงการ"
-                v-model="dataStorage.pj_code"
-                @input="
-                  $store.state.certificate_data.pj_code =
-                    $event.target.value.toUpperCase()
-                "
-              ></v-text-field
-            ></v-col>
-            <v-col
-              ><v-text-field
-                label="ชื่อ"
-                v-model="dataStorage.add_name"
-                :disabled="!dataStorage.two_sign"
-              ></v-text-field
-            ></v-col>
-          </v-row>
-          <v-row class="mt-n8"
-            ><v-col
-              ><v-text-field
-                label="วันที่"
-                v-model="dataStorage.date_desc"
-              ></v-text-field></v-col
-            ><v-col
-              ><v-text-field
-                label="ตำแหน่ง"
-                v-model="dataStorage.add_position"
-                :disabled="!dataStorage.two_sign"
-              ></v-text-field></v-col
-          ></v-row>
-          <v-row>
-            <!-- เพิ่มรายชื่อ -->
-            <v-spacer></v-spacer>
-            <v-btn
-              @click="createPDFShow"
-              class="mt-n7 mx-2"
-              size="small"
-              color="orange"
-              icon="mdi-refresh"
-            ></v-btn>
-            <v-btn
-              @click="addName()"
-              class="mt-n7 mx-2"
-              size="small"
-              color="green"
-              icon="mdi-account-multiple-plus"
-            ></v-btn>
-          </v-row>
-        </v-card-text>
-        <v-divider class="mt-12"></v-divider>
-      </v-card>
-      <v-card
-        ><v-table>
-          <thead>
-            <tr>
-              <th class="text-left">ลำดับ</th>
-              <th class="text-left">คำนำหน้า</th>
-              <th class="text-left">ชื่อ-นามสกุล</th>
-              <th class="text-left">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in dataDetail.data" :key="item.name">
-              <td>{{ index + 1 }}</td>
-              <td>{{ item.prefix }}</td>
-              <td>{{ item.name }}</td>
-              <td>
-                <div style="display: flex; gap: 10px">
-                  <v-icon
-                    @click="this.editName(index)"
-                    style="color: rgb(243, 156, 18)"
-                    >mdi-pencil</v-icon
-                  >
-                  <v-icon
-                    @click="deleteListName(index)"
-                    style="color: rgb(255, 0, 0)"
-                    >mdi-delete</v-icon
-                  >
-                </div>
-              </td>
-              <!-- <td><v-text-field variant="outlined" disabled dense></v-text-field></td>
+      <v-form ref="form" lazy-validation>
+        <v-card ref="form" height="270">
+          <v-card-text>
+            <v-row
+              ><v-col>
+                <v-text-field
+                  label="ชื่อโครงการ"
+                  v-model="dataStorage.pj_name"
+                  :rules="textRule"
+                  required
+                ></v-text-field></v-col
+              ><v-col
+                ><v-row
+                  ><v-col>
+                    <v-switch
+                      v-model="dataStorage.language"
+                      hide-details
+                      true-value="Eng"
+                      false-value="TH"
+                      color="indigo"
+                      :label="`ฟอร์ม : ${dataStorage.language}`"
+                    ></v-switch> </v-col
+                  ><v-col
+                    ><v-checkbox
+                      label="ใส่ลายเซ็น ผอ."
+                      v-model="dataStorage.sign"
+                      color="indigo"
+                      hide-details
+                    ></v-checkbox></v-col
+                  ><v-col
+                    ><v-checkbox
+                      label="2 ลายเซ็น"
+                      v-model="dataStorage.two_sign"
+                      color="indigo-darken-3"
+                      hide-details
+                    ></v-checkbox></v-col></v-row></v-col
+            ></v-row>
+            <v-row class="mt-n8">
+              <v-col
+                ><v-text-field
+                  label="รหัสโครงการ"
+                  id="pj_name"
+                  v-model="dataStorage.pj_code"
+                  :rules="textRule"
+                  @input="
+                    $store.state.certificate_data.pj_code =
+                      $event.target.value.toUpperCase()
+                  "
+                ></v-text-field
+              ></v-col>
+              <v-col
+                ><v-text-field
+                  label="ชื่อ"
+                  v-model="dataStorage.add_name"
+                  :rules="twoSignRule"
+                  :disabled="!dataStorage.two_sign"
+                ></v-text-field
+              ></v-col>
+            </v-row>
+            <v-row class="mt-n8"
+              ><v-col
+                ><v-text-field
+                  label="วันที่"
+                  v-model="dataStorage.date_desc"
+                  :rules="textRule"
+                  required
+                ></v-text-field></v-col
+              ><v-col
+                ><v-text-field
+                  label="ตำแหน่ง"
+                  v-model="dataStorage.add_position"
+                  :rules="twoSignRule"
+                  :disabled="!dataStorage.two_sign"
+                ></v-text-field></v-col
+            ></v-row>
+            <v-row>
+              <!-- เพิ่มรายชื่อ -->
+              <v-spacer></v-spacer>
+              <v-btn
+                @click="createPDFShow"
+                class="mt-n7 mx-2"
+                size="small"
+                color="orange"
+                icon="mdi-refresh"
+              ></v-btn>
+              <v-btn
+                @click="addName()"
+                class="mt-n7 mx-2"
+                size="small"
+                color="green"
+                icon="mdi-account-multiple-plus"
+              ></v-btn>
+            </v-row>
+          </v-card-text>
+          <v-divider class="mt-12"></v-divider>
+        </v-card>
+        <v-card
+          ><v-table>
+            <thead>
+              <tr>
+                <th class="text-left">ลำดับ</th>
+                <th class="text-left">คำนำหน้า</th>
+                <th class="text-left">ชื่อ-นามสกุล</th>
+                <th class="text-left">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in dataDetail.data" :key="item.name">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.prefix }}</td>
+                <td>{{ item.name }}</td>
+                <td>
+                  <div style="display: flex; gap: 10px">
+                    <v-icon
+                      @click="this.editName(index)"
+                      style="color: rgb(243, 156, 18)"
+                      >mdi-pencil</v-icon
+                    >
+                    <v-icon
+                      @click="deleteListName(index)"
+                      style="color: rgb(255, 0, 0)"
+                      >mdi-delete</v-icon
+                    >
+                  </div>
+                </td>
+                <!-- <td><v-text-field variant="outlined" disabled dense></v-text-field></td>
               <td><input type="text" /></td> -->
-            </tr>
-          </tbody>
-        </v-table></v-card
+              </tr>
+            </tbody>
+          </v-table></v-card
+        ></v-form
       >
     </v-col>
-
-    <!-- 
-    dialog confirm save data to db -->
-    <v-dialog v-model="showDialog" max-width="300">
-      <v-card>
-        <v-card-title> save certificate to database </v-card-title>
-        <v-card-text>
-          Are you sure you want to perform this action?
-        </v-card-text>
-        <v-card-actions class="text-center">
-          <v-btn color="red darken-1" text @click="showDialog = false"
-            >Cancel</v-btn
-          >
-          <v-btn
-            color="green darken-1"
-            :loading="loadingBtn"
-            @click="savePdfToDB"
-            >Confirm</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-row>
 
   <v-row justify="center">
-    <v-btn color="success" @click="confirmUpdate">Confirm</v-btn>
+    <v-btn color="success" @click="validateCheck">Confirm</v-btn>
     <v-btn
       class="ml-5"
       color="red"
@@ -209,8 +197,6 @@ export default {
       base_64: null,
       excel_array: null,
       preview: false,
-      save_to_db: false,
-      showDialog: false,
       loadingBtn: false,
 
       selectPopupShow: null,
@@ -221,6 +207,10 @@ export default {
         prefix: null,
         name: null,
       },
+      textRule: [(v) => !!v || "กรุณาใส่ข้อความ"],
+      twoSignRule: [
+        (v) => (this.dataStorage.two_sign ? !!v || "กรุณาใส่ข้อความ" : true),
+      ],
     };
   },
   mounted() {
@@ -233,6 +223,28 @@ export default {
     this.getDataCertificateDetail();
   },
   methods: {
+    handleInput(event) {
+      // แปลงเป็นตัวพิมพ์ใหญ่
+      this.dataStorage.pj_code = event.target.value.toUpperCase();
+
+      // กรองเฉพาะภาษาอังกฤษและเครื่องหมาย "-"
+      this.dataStorage.pj_code = this.dataStorage.pj_code.replace(/[^A-Za-z0-9-]/g, '');
+
+      // จำกัดจำนวนตัวอักษรไม่เกิน 12 ตัว
+      this.dataStorage.pj_code = this.dataStorage.pj_code.slice(0, 12);
+    },
+
+    validateCheck() {
+      if (!!this.dataStorage.pj_code && !!this.dataStorage.pj_name && !!this.dataStorage.date_desc) {
+        if (
+          !this.dataStorage.two_sign ||
+          (this.dataStorage.add_name && this.dataStorage.add_position)
+        ) {
+          this.confirmUpdate();
+        }
+      }
+    },
+
     confirmUpdate() {
       Swal.fire({
         title: "บันทึกการเปลี่ยนแปลง ?",
@@ -248,7 +260,6 @@ export default {
             this.dataStorage,
             this.dataDetail.data
           );
-          // console.log(result.data.msg);
           if (result.data.msg === "ok") {
             // set localStorage
             localStorage.setItem(
@@ -283,7 +294,6 @@ export default {
         iframe.style.height = "600px"; // เปลี่ยนเป็นค่าที่คุณต้องการ
       });
       this.preview = true;
-      this.save_to_db = true;
     },
 
     async getDataCertificateDetail() {
@@ -342,6 +352,17 @@ export default {
 
     deleteListName(index) {
       this.dataDetail.data.splice(index, 1);
+    },
+  }, 
+  watch: {
+    "dataStorage.two_sign": {
+      handler(newValue) {
+        if (!newValue) {
+          this.dataStorage.add_name = null;
+          this.dataStorage.add_position = null;
+        }
+      },
+      immediate: true, // เพื่อให้ทำการเช็คค่าเมื่อ component ถูก mount
     },
   },
 };

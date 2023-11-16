@@ -21,7 +21,6 @@
                       true-value="Eng"
                       false-value="TH"
                       color="indigo"
-                      value="indigo"
                       :label="`ฟอร์ม : ${form.language}`"
                     ></v-switch> </v-col
                   ><v-col
