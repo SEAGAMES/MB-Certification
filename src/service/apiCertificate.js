@@ -8,13 +8,19 @@ const createCertificate = async(data, excel) => {
     return result
 }
 
+const updateCertificate = async(data, listName) => {
+    const newData = []
+    newData.push(data, listName)
+    const result = axios.post(`${apiUrl}update_certificate`, newData)
+    return result
+}
+
 const getDataCertificate_master = async() => {
     const data = axios.get(`${apiUrl}data_certificate`)
     return data
 }
 
 const getDataCertificate_detail = async(datalist) => {
-    console.log('API : ', datalist)
     const data = axios.post(`${apiUrl}data_detail`, datalist)
     return data
 }
@@ -29,6 +35,11 @@ const duplicateCheck = async(pj_code) => {
     return data
 }
 
+const editName = async(data) => {
+    const result = axios.post(`${apiUrl}updateName`, data)
+    return result
+}
+
 const deleteCertificate = async(pj_code) => {
     const result = axios.delete(`${apiUrl}delete_certificate/${pj_code}`)
     return result
@@ -36,9 +47,11 @@ const deleteCertificate = async(pj_code) => {
   
 export default {
     createCertificate,
+    updateCertificate,
     getDataCertificate_master,
     getDataFilter,
     duplicateCheck,
+    editName,
     deleteCertificate,
     getDataCertificate_detail
 }
