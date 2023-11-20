@@ -1,41 +1,23 @@
-import pdfMake from 'pdfmake/build/pdfmake'
-import pdfFonts from "pdfmake/build/vfs_fonts"
-pdfMake.vfs = pdfFonts.pdfMake.vfs
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 
+import sarabun from '../font/thSarabun_Font'
+import timeNewRoman from '../font/timeNewRoman_Font'
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// import pdfMake from 'pdfmake/build/pdfmake';
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+// นำ Base64-encoded Font ไปใช้
+pdfMake.vfs["Sarabun-Regular.ttf"] = sarabun.normal;
+pdfMake.vfs["times.ttf"] = timeNewRoman.normal;
+pdfMake.vfs["timesbd.ttf"] = timeNewRoman.bold;
 import imgFromBase64 from '../assets/img/logo_mu'
-/*
-const createPDF = async (PdfForm) => {
-  let docDefinition = PdfForm;
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.fonts = {
-    THSarabunNew: {
-      normal: 'Sarabun-Regular.ttf',
-      bold: 'Sarabun-Bold.ttf',
-      italics: 'Sarabun-Thin.ttf',
-      bolditalics: 'Sarabun-Light.ttf'
-
-    },
-    Fontello: {
-      normal: 'fontello.ttf',
-      bold: 'fontello.ttf',
-      italics: 'fontello.ttf',
-      bolditalics: 'fontello.ttf'
-    },
-    Time: {
-      normal: 'times.ttf',
-      bold: 'times.ttf',
-      italics: 'times.ttf',
-      bolditalics: 'times.ttf'
-    }
-  };
-  //pdfMake.createPdf(docDefinition).open()
-  const pdfDocGenerator = pdfMake.createPdf(docDefinition)
-  return pdfDocGenerator
-};
-*/
 
 const certification_pdf = async (excel, form) => {
-  // console.log(pdfMake.vfs)
+  console.log('x : ',pdfMake.vfs)
   const docDefinition = {
     pageSize: 'A4',
     pageOrientation: 'landscape',
@@ -60,7 +42,7 @@ const certification_pdf = async (excel, form) => {
       right: {
         alignment: 'right'
       },
-      icon: { font: 'Fontello' }
+      // icon: { font: 'Fontello' }
 
     },
     //watermark: { text: 'ตัวอย่าง', color: 'blue', opacity: 0.2, fontSize: 50, bold: false, italics: false },
@@ -88,12 +70,6 @@ const certification_pdf = async (excel, form) => {
       italics: 'Sarabun-Thin.ttf',
       bolditalics: 'Sarabun-Light.ttf'
 
-    },
-    Fontello: {
-      normal: 'fontello.ttf',
-      bold: 'fontello.ttf',
-      italics: 'fontello.ttf',
-      bolditalics: 'fontello.ttf'
     },
     TimeNewRoman: {
       normal: 'times.ttf',
@@ -351,6 +327,5 @@ function run(excel, form) {
 
 
 export default {
-  //createPDF,
   certification_pdf
 };

@@ -235,6 +235,7 @@ export default {
     },
 
     validateCheck() {
+      this.$refs.form.validate();
       if (!!this.dataStorage.pj_code && !!this.dataStorage.pj_name && !!this.dataStorage.date_desc) {
         if (
           !this.dataStorage.two_sign ||
