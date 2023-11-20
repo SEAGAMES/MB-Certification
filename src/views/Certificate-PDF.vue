@@ -162,7 +162,7 @@ export default {
         add_name: "",
         add_position: "",
         language: "TH",
-        sign: true,
+        sign: false,
         two_sign: false,
       },
       base_64: null,
