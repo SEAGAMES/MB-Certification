@@ -17,6 +17,7 @@
     "core-js": "^3.33.2",
     "gulp": "^4.0.2",
     "mitt": "^3.0.1",
+    "node-red-contrib-pdfmake": "^1.1.0",
     "pdfmake": "^0.2.8",
     "vue": "^3.3.8",
     "vue-router": "^4.0.0",

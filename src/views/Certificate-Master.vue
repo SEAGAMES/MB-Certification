@@ -93,7 +93,7 @@ export default {
     async getDataCertificateMaster() {
       const data = await apiCertificate.getDataCertificate_master();
       this.dataLoad = data.data;
-      console.log(this.dataLoad.data);
+      // console.log(this.dataLoad.data);
     },
 
     editCertificate(data) {

@@ -173,7 +173,9 @@ export default {
       loadingBtn: false,
     };
   },
-  async mounted() {},
+  async mounted() {
+    
+  },
   methods: {
     showAlert(icon, title) {
       Swal.fire({
@@ -190,7 +192,7 @@ export default {
       this.form.pj_code = event.target.value.toUpperCase();
 
       // กรองเฉพาะภาษาอังกฤษและเครื่องหมาย "-"
-      this.form.pj_code = this.form.pj_code.replace(/[^A-Za-z0-9-]/g, '');
+      this.form.pj_code = this.form.pj_code.replace(/[^A-Za-z0-9-]/g, "");
 
       // จำกัดจำนวนตัวอักษรไม่เกิน 12 ตัว
       this.form.pj_code = this.form.pj_code.slice(0, 12);
