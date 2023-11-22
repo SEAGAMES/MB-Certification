@@ -5,10 +5,6 @@ import sarabun from '../font/thSarabun_Font'
 import timeNewRoman from '../font/timeNewRoman_Font'
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-// import pdfMake from 'pdfmake/build/pdfmake';
-// import pdfFonts from 'pdfmake/build/vfs_fonts';
-
-// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 // นำ Base64-encoded Font ไปใช้
 pdfMake.vfs["Sarabun-Regular.ttf"] = sarabun.normal;
@@ -17,7 +13,7 @@ pdfMake.vfs["timesbd.ttf"] = timeNewRoman.bold;
 import imgFromBase64 from '../assets/img/logo_mu'
 
 const certification_pdf = async (excel, form) => {
-  console.log('x : ',pdfMake.vfs)
+  //console.log('x : ',pdfMake.vfs)
   const docDefinition = {
     pageSize: 'A4',
     pageOrientation: 'landscape',
@@ -217,7 +213,7 @@ function run(excel, form) {
         absolutePosition: { x: valueX, y: 40 }
       },
 
-      { qr: form.pj_code + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 753, y: 60 } },
+      { qr: form.pj_code + '-' + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 753, y: 60 } },
 
       (form.language === "Eng") ? { text: 'Institute of  Molecular Biosciences', color: '#1565C0', fontSize: 24, absolutePosition: { x: 50, y: 120 } } : {},
       (form.language === "Eng") ? { text: 'Mahidol University ', color: '#1565C0', fontSize: 24, absolutePosition: { x: 50, y: 150 } } : {},

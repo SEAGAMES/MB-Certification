@@ -1,5 +1,5 @@
-<template>
-  <v-row justify="center">
+<template >
+  <v-row justify="center" class="fontSarabun">
     <v-col cols="12" sm="10" md="8" lg="6">
       <v-form ref="form" lazy-validation>
         <v-card ref="form" height="270">
@@ -174,7 +174,7 @@ export default {
     };
   },
   async mounted() {
-    
+    console.log(window.location);
   },
   methods: {
     showAlert(icon, title) {
@@ -296,3 +296,6 @@ export default {
   justify-content: right;
 }
 </style>
+
+
+

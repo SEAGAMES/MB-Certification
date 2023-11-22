@@ -1,6 +1,11 @@
 import axios from "axios"
 import { apiUrl } from '../service/getUrl'
 
+const getDataQrCode = async(pj_code, no) => {
+    const data = axios.get(`${apiUrl}data_formqrcode/${pj_code}/${no}`)
+    return data
+}
+
 const createCertificate = async(data, excel) => {
     const newData = []
     newData.push(data, excel)
@@ -46,6 +51,7 @@ const deleteCertificate = async(pj_code) => {
 }
   
 export default {
+    getDataQrCode,
     createCertificate,
     updateCertificate,
     getDataCertificate_master,

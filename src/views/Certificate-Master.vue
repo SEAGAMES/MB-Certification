@@ -1,34 +1,40 @@
-<template>
-  <v-data-table
-    :headers="headers"
-    :items="dataLoad.data"
-    :items-per-page="10"
-    :search="search"
-  >
-    <template v-slot:item="{ item }">
-      <tr align="center">
-        <td>{{ item.pj_code }}</td>
-        <td>{{ item.pj_name }}</td>
-        <td>{{ item.language }}</td>
-        <td>{{ item.currentYear }}</td>
-        <td>{{ item.date_desc }}</td>
-        <td>
-          <div style="display: flex; gap: 10px">
-            <v-icon
-              @click="editCertificate(item)"
-              style="color: rgb(243, 156, 18)"
-              >mdi-pencil</v-icon
-            >
-            <v-icon
-              @click="deleteCertificate(item.pj_code)"
-              style="color: rgb(255, 0, 0)"
-              >mdi-delete</v-icon
-            >
-          </div>
-        </td>
-      </tr>
-    </template></v-data-table
-  >
+<template >
+  <v-container class="fontSarabun">
+    <v-data-table
+      :headers="headers"
+      :items="dataLoad.data"
+      :items-per-page="10"
+      :search="search"
+    >
+      <template v-slot:item="{ item }">
+        <tr align="center">
+          <td>{{ item.pj_code }}</td>
+          <td>{{ item.pj_name }}</td>
+          <!-- <td>{{ item.language }}</td> -->
+          <v-chip :color="getColor(item.language) ">
+            {{ item.language }}
+          </v-chip>
+          <td>{{ item.currentYear }}</td>
+          <td>{{ item.date_desc }}</td>
+          <td>
+            <div style="display: flex; gap: 10px">
+              <v-icon
+                @click="editCertificate(item)"
+                style="color: rgb(243, 156, 18)"
+                >mdi-pencil</v-icon
+              >
+              <v-icon
+                @click="deleteCertificate(item.pj_code)"
+                style="color: rgb(255, 0, 0)"
+                >mdi-delete</v-icon
+              >
+            </div>
+          </td>
+        </tr>
+      </template></v-data-table
+    >
+  </v-container>
+
 </template>
 
 <script>
@@ -63,6 +69,11 @@ export default {
   },
 
   methods: {
+    getColor(language) {
+      if (language === "TH") return "green";
+      else return "red";
+    },
+
     deleteAlert(pj_code) {
       Swal.fire({
         title: "คุณแน่ใจหรือไม่ที่จะลบ?",
@@ -121,3 +132,7 @@ export default {
   },
 };
 </script>
+
+<style>
+
+</style>

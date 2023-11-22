@@ -29,6 +29,12 @@ const routes = [
     name: 'Certificate-Edit',
     component: () => import('../views/Certificate-Edit.vue'),
   },
+  {
+    path: '/show-pdf/:path',
+    name: 'show-pdf',
+    props: true,
+    component: () => import('../views/Show-PDF.vue'),
+  },
 ]
 
 const router = createRouter({
