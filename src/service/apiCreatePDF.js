@@ -205,7 +205,7 @@ function run(excel, form) {
       },
 
       {
-        text: 'CERTIFICATION NUMBER  ' + form.currentYear + '-' + form.pj_code + '-' + String(index + 1).padStart(4, '0'),
+        text: (excel.length === 1) ? 'CERTIFICATION NUMBER  ' + form.currentYear + '-' + form.pj_code + '-' + form.no : 'CERTIFICATION NUMBER  ' + form.currentYear + '-' + form.pj_code + '-' + String(index + 1).padStart(4, '0'),
         fontSize: 9,
         font: 'THSarabunNew',
         absolutePosition: { x: valueX, y: 40 }
@@ -213,7 +213,7 @@ function run(excel, form) {
 
       //{ qr: form.pj_code + '-' + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 753, y: 60 } },
       // http://localhost:3300/show-pdf/path?param1=ASST-HOO-04&param2=1
-      { qr: 'http://10.62.38.51:3300/show-pdf/path?' +`param1=ASST-HOO-04` + '&' + `param2=1`, fit: '80', absolutePosition: { x: 753, y: 60 } },
+      { qr: 'http://10.62.38.51:3300/show-pdf/path?' +`param1=ASST-HOO-04` + '&' + `param2=1`, fit: 60, absolutePosition: { x: 760, y: 60 } },
 
       (form.language === "Eng") ? { text: 'Institute of  Molecular Biosciences', color: '#1565C0', fontSize: 24, absolutePosition: { x: 50, y: 120 } } : {},
       (form.language === "Eng") ? { text: 'Mahidol University ', color: '#1565C0', fontSize: 24, absolutePosition: { x: 50, y: 150 } } : {},
@@ -313,9 +313,8 @@ function run(excel, form) {
         image: (form.language === 'TH') ? 'footer_th' : 'footer_eng',
         width: 842,
         height: 50,
-        absolutePosition: { x: 40, y: 550 }, pageBreak: 'after'
+        absolutePosition: { x: 40, y: 550 }, pageBreak: excel.length === 1 ? '' : 'after'
       },
-
     )
   })
   return s
