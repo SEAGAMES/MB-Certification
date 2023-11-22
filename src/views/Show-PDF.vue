@@ -1,10 +1,21 @@
 <template>
-  <h1>QR CODE</h1>
+  <v-row justify="center">
+    <div>
+      <!-- ใช้ <iframe> เพื่อแสดงไฟล์ PDF -->
+      <iframe :src="base_64" ref="pdfIframe"></iframe>
+    </div>
+  </v-row>
 </template>
 
 <script>
 import dataQrCode from "../service/apiCertificate";
+import createPDF from "@/service/apiCreatePDF";
 export default {
+  data() {
+    return {
+      base_64: "",
+    };
+  },
   async mounted() {
     // สร้าง URL object
     const url = new URL(window.location.href);
@@ -17,7 +28,23 @@ export default {
     const param2Value = urlParams.get("param2");
 
     const { data } = await dataQrCode.getDataQrCode(param1Value, param2Value);
-    console.log(data.data[0]);
+    const name = [{ prefix: "Mr.", name: "Thanakrit Nimnual" }];
+
+    await this.createPDF(data.data[0], name);
+  },
+  methods: {
+    async createPDF(data, name) {
+      const pdfDocGenerator = await createPDF.certification_pdf(name, data);
+      this.base_64 = pdfDocGenerator;
+
+      pdfDocGenerator.getDataUrl((dataUrl) => {
+        this.base_64 = dataUrl;
+        const iframe = this.$refs.pdfIframe;
+        iframe.src = dataUrl;
+        iframe.style.width = `${window.innerWidth}px`;
+        iframe.style.height = `${window.innerHeight}px`;
+      });
+    },
   },
 };
 </script>

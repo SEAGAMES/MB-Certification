@@ -174,7 +174,7 @@ export default {
     };
   },
   async mounted() {
-    console.log(window.location);
+  
   },
   methods: {
     showAlert(icon, title) {
@@ -217,6 +217,7 @@ export default {
       );
 
       pdfDocGenerator.getDataUrl((dataUrl) => {
+        console.log('dataUrl : ', dataUrl )
         this.base_64 = dataUrl;
         const iframe = this.$refs.pdfIframe;
         iframe.src = dataUrl;
