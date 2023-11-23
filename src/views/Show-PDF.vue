@@ -28,8 +28,6 @@ export default {
     const param2Value = urlParams.get("param2");
 
     const { data } = await dataQrCode.getDataQrCode(param1Value, param2Value);
-    console.log(param1Value, param2Value)
-    console.log(data.data[0])
     const name = [];
     name.push({ prefix: data.data[0].prefix, name: data.data[0].name })
 

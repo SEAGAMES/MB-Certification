@@ -205,15 +205,13 @@ function run(excel, form) {
       },
 
       {
-        text: (excel.length === 1) ? 'CERTIFICATION NUMBER  ' + form.currentYear + '-' + form.pj_code + '-' + form.no : 'CERTIFICATION NUMBER  ' + form.currentYear + '-' + form.pj_code + '-' + String(index + 1).padStart(4, '0'),
+        text: (excel.length === 1) ? 'CERTIFICATION NUMBER  ' + form.currentYear + '-' + form.pj_code + '-' + form.no.toString().padStart(4, '0') : 'CERTIFICATION NUMBER  ' + form.currentYear + '-' + form.pj_code + '-' + String(index + 1).padStart(4, '0'),
         fontSize: 9,
         font: 'THSarabunNew',
         absolutePosition: { x: valueX, y: 40 }
       },
 
-      //{ qr: form.pj_code + '-' + String(index + 1).padStart(4, '0'), fit: '60', absolutePosition: { x: 753, y: 60 } },
-      // http://localhost:3300/show-pdf/path?param1=ASST-HOO-04&param2=1
-      { qr: 'http://10.62.38.51:3300/show-pdf/path?' +`param1=ASST-HOO-04` + '&' + `param2=1`, fit: 60, absolutePosition: { x: 760, y: 60 } },
+      (excel.length === 1) ? { qr: 'http://10.62.38.51:3300/show-pdf/path?' + `param1=${form.pj_code}` + '&' + `param2=${form.no}`, fit: 60, absolutePosition: { x: 760, y: 60 } } : { qr: 'http://10.62.38.51:3300/show-pdf/path?' + `param1=${form.pj_code}` + '&' + `param2=${e.no}`, fit: 60, absolutePosition: { x: 760, y: 60 } },
 
       (form.language === "Eng") ? { text: 'Institute of  Molecular Biosciences', color: '#1565C0', fontSize: 24, absolutePosition: { x: 50, y: 120 } } : {},
       (form.language === "Eng") ? { text: 'Mahidol University ', color: '#1565C0', fontSize: 24, absolutePosition: { x: 50, y: 150 } } : {},
@@ -221,7 +219,7 @@ function run(excel, form) {
       (form.language === "TH") ? { text: 'เกียรติบัตรนี้ให้ไว้เพื่อแสดงว่า', margin: [0, 15, 0, 0], fontSize: 18 } : { text: 'This is to certify that', absolutePosition: { x: 50, y: 180 + valueMargin } },
 
       (form.language === "Eng") ? {
-        text: e.prefix + ' ' + e.name, color: '#0D47A1', fontSize: 34, absolutePosition: { x: 50, y: 215 + valueMargin },  bold: true,
+        text: e.prefix + ' ' + e.name, color: '#0D47A1', fontSize: 34, absolutePosition: { x: 50, y: 215 + valueMargin }, bold: true,
       } : {
         text: e.prefix + ' ' + e.name, color: '#0D47A1', fontSize: 28
       },
@@ -245,7 +243,7 @@ function run(excel, form) {
       } : { text: form.date_desc, absolutePosition: { x: 50, y: 350 + valueMargin } },
 
       (form.language === "TH") ? {
-        text: 'ณ สถาบันชีววิทยาศาสตร์โมเลกุล มหาวิทยาลัยมหิดล', margin: [0,10,0,0]
+        text: 'ณ สถาบันชีววิทยาศาสตร์โมเลกุล มหาวิทยาลัยมหิดล', margin: [0, 10, 0, 0]
       } : {},
 
       signOption(form),
