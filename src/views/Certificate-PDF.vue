@@ -1,22 +1,24 @@
 <template >
   <v-row justify="center" class="fontSarabun">
-    <v-col cols="12" sm="10" md="8" lg="6">
+    <v-col cols="10" sm="10" md="8" lg="6">
       <v-form ref="form" lazy-validation>
-        <v-card ref="form" height="270">
+        <v-card ref="form" :height="270">
           <v-card-text>
             <v-row
-              ><v-col
+              ><v-col cols="12" sm="12" md="6" lg="6"
                 ><v-text-field
                   label="ชื่อโครงการ"
                   v-model="form.pj_name"
+                  @change="saveCreatePDF"
                   :rules="textRule"
                   required
                 ></v-text-field></v-col
               ><v-col
                 ><v-row
-                  ><v-col>
+                  ><v-col cols="4">
                     <v-switch
                       v-model="form.language"
+                      @change="saveCreatePDF"
                       hide-details
                       true-value="Eng"
                       false-value="TH"
@@ -27,6 +29,7 @@
                     ><v-checkbox
                       label="ใส่ลายเซ็น ผอ."
                       v-model="form.sign"
+                      @change="saveCreatePDF"
                       color="indigo"
                       hide-details
                     ></v-checkbox></v-col
@@ -34,6 +37,7 @@
                     ><v-checkbox
                       label="2 ลายเซ็น"
                       v-model="form.two_sign"
+                      @change="saveCreatePDF"
                       color="indigo-darken-3"
                       hide-details
                     ></v-checkbox></v-col></v-row></v-col
@@ -44,6 +48,7 @@
                   label="รหัสโครงการ"
                   id="pj_name"
                   v-model="form.pj_code"
+                  @change="saveCreatePDF"
                   :rules="textRule"
                   @input="handleInput"
                   required
@@ -53,6 +58,7 @@
                 ><v-text-field
                   label="ชื่อ"
                   v-model="form.add_name"
+                  @change="saveCreatePDF"
                   :rules="twoSignRule"
                   :disabled="!form.two_sign"
                 ></v-text-field
@@ -63,6 +69,7 @@
                 ><v-text-field
                   label="วันที่"
                   v-model="form.date_desc"
+                  @change="saveCreatePDF"
                   :rules="textRule"
                   required
                 ></v-text-field></v-col
@@ -70,6 +77,7 @@
                 ><v-text-field
                   label="ตำแหน่ง"
                   v-model="form.add_position"
+                  @change="saveCreatePDF"
                   :rules="twoSignRule"
                   :disabled="!form.two_sign"
                 ></v-text-field></v-col
@@ -79,6 +87,7 @@
                 class="mt-n5 ml-3"
                 type="file"
                 @change.left="add_file()"
+                @change="saveCreatePDF"
                 @click="this.$refs.myFiles.value = null"
                 ref="myFiles"
                 accept=".xls, .xlsx, .csv"
@@ -86,6 +95,7 @@
               <v-spacer></v-spacer>
               <v-btn
                 v-if="save_to_db"
+                @change="saveCreatePDF"
                 @click="createCertificate"
                 class="mt-n7 mx-2"
                 size="small"
@@ -95,6 +105,7 @@
               <!-- @click="showDialog = true" -->
               <v-btn
                 v-if="save_to_db"
+                @change="saveCreatePDF"
                 @click="validateCheck"
                 class="mt-n7 mx-2"
                 size="small"
@@ -125,6 +136,7 @@
             :loading="loadingBtn"
             type="submit"
             @click="savePdfToDB"
+            @change="saveCreatePDF"
             >Confirm</v-btn
           >
         </v-card-actions>
@@ -155,9 +167,9 @@ export default {
       ],
 
       form: {
-        pj_name: "TEST ENG FORM",
-        pj_code: "PAR-HOO-01",
-        date_desc: "7–18 August 2023",
+        pj_name: "",
+        pj_code: "",
+        date_desc: "",
         currentYear: "",
         add_name: "",
         add_position: "",
@@ -174,7 +186,8 @@ export default {
     };
   },
   async mounted() {
-  
+    const dataFormLocal = localStorage.getItem("create_pdf");
+    console.log(dataFormLocal.pj_code)
   },
   methods: {
     showAlert(icon, title) {
@@ -187,9 +200,14 @@ export default {
       });
     },
 
-    handleInput(event) {
+    saveCreatePDF() {
+      localStorage.setItem("create_pdf", JSON.stringify(this.form));
+    },
+
+    //handleInput(event) {
+    handleInput() {
       // แปลงเป็นตัวพิมพ์ใหญ่
-      this.form.pj_code = event.target.value.toUpperCase();
+      //this.form.pj_code = event.target.value.toUpperCase();
 
       // กรองเฉพาะภาษาอังกฤษและเครื่องหมาย "-"
       this.form.pj_code = this.form.pj_code.replace(/[^A-Za-z0-9-]/g, "");
@@ -273,6 +291,7 @@ export default {
       }, 1500);
     },
   },
+
   watch: {
     excel_array() {
       this.createCertificate();
