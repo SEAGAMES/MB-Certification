@@ -217,7 +217,6 @@ export default {
       );
 
       pdfDocGenerator.getDataUrl((dataUrl) => {
-        console.log('dataUrl : ', dataUrl )
         this.base_64 = dataUrl;
         const iframe = this.$refs.pdfIframe;
         iframe.src = dataUrl;
