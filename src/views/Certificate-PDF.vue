@@ -187,7 +187,18 @@ export default {
   },
   async mounted() {
     const dataFormLocal = localStorage.getItem("create_pdf");
-    console.log(dataFormLocal.pj_code)
+        // แปลงข้อมูลที่ดึงมาให้กลายเป็น Object
+        this.dataFormLocal = JSON.parse(dataFormLocal);
+    this.form.pj_code = this.dataFormLocal.pj_code;
+    this.form.pj_name = this.dataFormLocal.pj_name;
+    this.form.date_desc = this.dataFormLocal.date_desc;
+    this.form.currentYear = this.dataFormLocal.currentYear;
+    this.form.add_name = this.dataFormLocal.add_name;
+    this.form.add_position = this.dataFormLocal.add_position;
+    this.form.language = this.dataFormLocal.language;
+    this.form.sign = this.dataFormLocal.sign;
+    this.form.two_sign = this.dataFormLocal.two_sign;
+    console.log(this.form)
   },
   methods: {
     showAlert(icon, title) {
@@ -291,6 +302,7 @@ export default {
       }, 1500);
     },
   },
+
 
   watch: {
     excel_array() {
