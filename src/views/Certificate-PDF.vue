@@ -177,6 +177,16 @@ export default {
         sign: false,
         two_sign: false,
       },
+
+      file: {
+        name: "",
+        size: "",
+        type: "",
+        lastModified: "",
+        lastModifiedDate: "",
+        webkitRelativePath: "",
+      },
+
       base_64: null,
       excel_array: null,
       preview: false,
@@ -186,19 +196,17 @@ export default {
     };
   },
   async mounted() {
-    const dataFormLocal = localStorage.getItem("create_pdf");
-        // แปลงข้อมูลที่ดึงมาให้กลายเป็น Object
-        this.dataFormLocal = JSON.parse(dataFormLocal);
-    this.form.pj_code = this.dataFormLocal.pj_code;
-    this.form.pj_name = this.dataFormLocal.pj_name;
-    this.form.date_desc = this.dataFormLocal.date_desc;
-    this.form.currentYear = this.dataFormLocal.currentYear;
-    this.form.add_name = this.dataFormLocal.add_name;
-    this.form.add_position = this.dataFormLocal.add_position;
-    this.form.language = this.dataFormLocal.language;
-    this.form.sign = this.dataFormLocal.sign;
-    this.form.two_sign = this.dataFormLocal.two_sign;
-    console.log(this.form)
+    const dataFormLocal = JSON.parse(localStorage.getItem("create_pdf")) || {};
+    this.form = { ...this.form, ...dataFormLocal }; //กำหนดค่าทุก property ของ dataFormLocal ลงใน this.form.
+
+    // const excel_file = localStorage.getItem("excel_file_list_name");
+    // this.dataFormLocal2 = JSON.parse(excel_file);
+    // this.file.name = this.dataFormLocal2.name;
+    // this.file.size = this.dataFormLocal2.size;
+    // this.file.type = this.dataFormLocal2.type;
+    // this.file.lastModified = this.dataFormLocal2.lastModified;
+    // this.file.lastModifiedDate = this.dataFormLocal2.lastModifiedDate;
+    // this.file.webkitRelativePath = this.dataFormLocal2.webkitRelativePath;
   },
   methods: {
     showAlert(icon, title) {
@@ -215,6 +223,21 @@ export default {
       localStorage.setItem("create_pdf", JSON.stringify(this.form));
     },
 
+    clearCreatePDF() {
+      this.form = {
+        pj_code: "",
+        pj_name: "",
+        date_desc: "",
+        currentYear: "",
+        add_name: "",
+        add_position: "",
+        language: "TH",
+        sign: false,
+        two_sign: false,
+      };
+      this.saveCreatePDF();
+    },
+
     //handleInput(event) {
     handleInput() {
       // แปลงเป็นตัวพิมพ์ใหญ่
@@ -228,8 +251,25 @@ export default {
     },
 
     async add_file() {
+      //let file = "";
+      // if (this.file.name === "") {
+      //   file = this.$refs.myFiles.files[0];
+
+      //   this.file.name = file.name;
+      //   this.file.size = file.size;
+      //   this.file.type = file.type;
+      //   this.file.lastModified = file.lastModified;
+      //   this.file.lastModifiedDate = file.lastModifiedDate;
+      //   this.file.webkitRelativePath = file.webkitRelativePath;
+
+      //   localStorage.setItem("excel_file_list_name", JSON.stringify(this.file));
+      // } else {
+      //   file = this.file;
+      //   console.log("else : ", file);
+      // }
       const file = this.$refs.myFiles.files[0];
       const data = await file.arrayBuffer();
+      console.log("data : ", data);
       const workbook = XLSX.read(data);
       const ws = workbook.Sheets[workbook.SheetNames[0]];
       const result = XLSX.utils.sheet_to_json(ws, {});
@@ -289,6 +329,7 @@ export default {
             // const data = await apiCertificate.getDataCertificate();
             // this.$store.state.certificate_data = data.data
             this.showAlert("success", "บันทักข้อมูลสำเร็จ");
+            this.clearCreatePDF();
           } else {
             this.showAlert("error", "บันทึกไม่สำเร็จ");
           }
@@ -302,7 +343,6 @@ export default {
       }, 1500);
     },
   },
-
 
   watch: {
     excel_array() {
