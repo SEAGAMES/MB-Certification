@@ -230,20 +230,26 @@ function run(excel, form) {
 
       (form.language === "Eng" && form.pj_code.substring(0, 3) === 'PAR') ? { text: 'participated in the practical training entitled', absolutePosition: { x: 50, y: 265 + valueMargin } } : (form.language === "Eng" && form.pj_code.substring(0, 4) === 'ASST') ? { text: 'is an assistant on practical training entitled', absolutePosition: { x: 50, y: 265 + valueMargin } } : {},
 
-      (form.language === "Eng") ? {
-        text: 'Student Science Training Program' + ' ' + form.currentYear, color: '#1565C0', fontSize: 28, absolutePosition: { x: 50, y: 300 + valueMargin }, bold: true,
-      } : {},
+      // (form.language === "Eng") ? {
+      //   text: 'Student Science Training Program' + ' ' + form.currentYear, color: '#1565C0', fontSize: 28, absolutePosition: { x: 50, y: 300 + valueMargin }, bold: true,
+      // } : {},
+
+      (form.language === "TH")
+        ? { text: "“" + form.pj_name + "”", color: '#1565C0', fontSize: 24, absolutePosition: { x: 50, y: 250 + valueMargin } }
+        : (form.language === "Eng" && (form.pj_code.substring(0, 3) === 'PAR' || form.pj_code.substring(0, 4) === 'ASST'))
+          ? { text: 'Student Science Training Program' + ' ' + form.currentYear, color: '#1565C0', fontSize: 28, absolutePosition: { x: 50, y: 300 + valueMargin }, bold: true }
+          : { text: "“" + form.pj_name + "”", color: '#1565C0', fontSize: 24, absolutePosition: { x: 50, y: 280 + valueMargin } },
 
 
-      (form.language === "TH") ? { text: "“" + form.pj_name + "”", color: '#1565C0', fontSize: 24 } : {},
+      // (form.language === "TH") ? { text: "“" + form.pj_name + "”", color: '#1565C0', fontSize: 24 } : {},
       { text: form.date },
 
       (form.language === "TH") ? {
-        text: form.date_desc
-      } : { text: form.date_desc, absolutePosition: { x: 50, y: 350 + valueMargin } },
+        text: form.date_desc, absolutePosition: { x: 50, y: 300 + valueMargin }
+      } : (form.language === "Eng" && (form.pj_code.substring(0, 3) === 'PAR' || form.pj_code.substring(0, 4) === 'ASST')) ? { text: form.date_desc, absolutePosition: { x: 50, y: 350 + valueMargin } } : { text: form.date_desc, absolutePosition: { x: 50, y: 340 + valueMargin } },
 
       (form.language === "TH") ? {
-        text: 'ณ สถาบันชีววิทยาศาสตร์โมเลกุล มหาวิทยาลัยมหิดล', margin: [0, 10, 0, 0]
+        text: 'ณ สถาบันชีววิทยาศาสตร์โมเลกุล มหาวิทยาลัยมหิดล', absolutePosition: { x: 50, y: 345 + valueMargin }
       } : {},
 
       signOption(form),
