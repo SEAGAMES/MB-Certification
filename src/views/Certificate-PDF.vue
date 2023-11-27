@@ -5,7 +5,7 @@
         <v-card ref="form" :height="270">
           <v-card-text>
             <v-row
-              ><v-col cols="12" sm="12" md="6" lg="6"
+              ><v-col cols="12" md="6"
                 ><v-text-field
                   label="ชื่อโครงการ"
                   v-model="form.pj_name"
@@ -15,7 +15,7 @@
                 ></v-text-field></v-col
               ><v-col
                 ><v-row
-                  ><v-col cols="4">
+                  ><v-col cols="4" >
                     <v-switch
                       v-model="form.language"
                       @change="saveCreatePDF"
@@ -43,7 +43,7 @@
                     ></v-checkbox></v-col></v-row></v-col
             ></v-row>
             <v-row class="mt-n8">
-              <v-col
+              <v-col cols="12" md="6"
                 ><v-text-field
                   label="รหัสโครงการ"
                   id="pj_name"
@@ -54,7 +54,7 @@
                   required
                 ></v-text-field
               ></v-col>
-              <v-col
+              <v-col cols="12" md="6"
                 ><v-text-field
                   label="ชื่อ"
                   v-model="form.add_name"
@@ -65,7 +65,7 @@
               ></v-col>
             </v-row>
             <v-row class="mt-n8"
-              ><v-col
+              ><v-col cols="6"
                 ><v-text-field
                   label="วันที่"
                   v-model="form.date_desc"
@@ -73,7 +73,7 @@
                   :rules="textRule"
                   required
                 ></v-text-field></v-col
-              ><v-col
+              ><v-col cols="6"
                 ><v-text-field
                   label="ตำแหน่ง"
                   v-model="form.add_position"
@@ -198,15 +198,6 @@ export default {
   async mounted() {
     const dataFormLocal = JSON.parse(localStorage.getItem("create_pdf")) || {};
     this.form = { ...this.form, ...dataFormLocal }; //กำหนดค่าทุก property ของ dataFormLocal ลงใน this.form.
-
-    // const excel_file = localStorage.getItem("excel_file_list_name");
-    // this.dataFormLocal2 = JSON.parse(excel_file);
-    // this.file.name = this.dataFormLocal2.name;
-    // this.file.size = this.dataFormLocal2.size;
-    // this.file.type = this.dataFormLocal2.type;
-    // this.file.lastModified = this.dataFormLocal2.lastModified;
-    // this.file.lastModifiedDate = this.dataFormLocal2.lastModifiedDate;
-    // this.file.webkitRelativePath = this.dataFormLocal2.webkitRelativePath;
   },
   methods: {
     showAlert(icon, title) {
@@ -251,22 +242,6 @@ export default {
     },
 
     async add_file() {
-      //let file = "";
-      // if (this.file.name === "") {
-      //   file = this.$refs.myFiles.files[0];
-
-      //   this.file.name = file.name;
-      //   this.file.size = file.size;
-      //   this.file.type = file.type;
-      //   this.file.lastModified = file.lastModified;
-      //   this.file.lastModifiedDate = file.lastModifiedDate;
-      //   this.file.webkitRelativePath = file.webkitRelativePath;
-
-      //   localStorage.setItem("excel_file_list_name", JSON.stringify(this.file));
-      // } else {
-      //   file = this.file;
-      //   console.log("else : ", file);
-      // }
       const file = this.$refs.myFiles.files[0];
       const data = await file.arrayBuffer();
       console.log("data : ", data);
